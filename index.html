@@ -16,14 +16,7 @@
     <div class="wrap nav-container">
       <a class="brand" href="#top" aria-label="Hope and Bloom Home">
         <span class="brand-icon">
-          <!-- Flower icon SVG -->
-          <svg viewBox="0 0 24 24" fill="none" stroke="#E89B2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3" fill="#E89B2B"></circle>
-            <path d="M12 2a4 4 0 0 0-4 4c0 2 2 3 4 3 2 0 4-1 4-3a4 4 0 0 0-4-4z" fill="#19564E" stroke="none"></path>
-            <path d="M12 22a4 4 0 0 0 4-4c0-2-2-3-4-3-2 0-4 1-4 3a4 4 0 0 0 4 4z" fill="#19564E" stroke="none"></path>
-            <path d="M2 12a4 4 0 0 0 4 4c2 0 3-2 3-4 0-2-1-4-3-4a4 4 0 0 0-4 4z" fill="#E66F53" stroke="none"></path>
-            <path d="M22 12a4 4 0 0 0-4-4c-2 0-3 2-3 4 0 2 1 4 3 4a4 4 0 0 0 4-4z" fill="#E66F53" stroke="none"></path>
-          </svg>
+          <img src="images/hope-and-bloom-logo.png" alt="Hope and Bloom logo">
         </span>
         <span>Hope and Bloom</span>
       </a>
@@ -98,20 +91,32 @@
           <div class="hero-blob-gold" aria-hidden="true"></div>
           <div class="hero-dot-accent" aria-hidden="true"></div>
 
-          <div class="photo-card">
-            <!-- Warm photograph of teacher/therapist engaged in playful learning -->
-            <img 
-              src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=900&q=80" 
-              alt="Therapist and happy young child playing and learning together with colorful developmental toys" 
-              loading="eager"
-            />
-            
-            <!-- Floating top right pill badge -->
+          <div class="photo-card carousel" aria-roledescription="carousel" aria-label="Hope and Bloom center photos">
+            <div class="carousel-track">
+              <figure class="carousel-slide active" aria-label="1 of 3">
+                <img src="images/center-playroom.png" alt="Bright and colorful Hope and Bloom playroom" loading="eager">
+              </figure>
+              <figure class="carousel-slide" aria-label="2 of 3">
+                <img src="images/center-entrance.png" alt="Hope and Bloom welcoming center entrance" loading="lazy">
+              </figure>
+              <figure class="carousel-slide" aria-label="3 of 3">
+                <img src="images/center-reception.png" alt="Warm Hope and Bloom reception area" loading="lazy">
+              </figure>
+            </div>
+
+            <button class="carousel-button carousel-button-prev" type="button" aria-label="Previous photo">‹</button>
+            <button class="carousel-button carousel-button-next" type="button" aria-label="Next photo">›</button>
+
+            <div class="carousel-dots" role="tablist" aria-label="Choose photo">
+              <button class="carousel-dot active" type="button" role="tab" aria-label="Show photo 1" aria-selected="true"></button>
+              <button class="carousel-dot" type="button" role="tab" aria-label="Show photo 2" aria-selected="false"></button>
+              <button class="carousel-dot" type="button" role="tab" aria-label="Show photo 3" aria-selected="false"></button>
+            </div>
+
             <div class="floating-pill-tag">
               <span>🏡</span> HOME &amp; CENTER CARE
             </div>
 
-            <!-- Floating bottom left review card -->
             <div class="floating-review-card">
               <span class="review-headline">GROWING EVERY DAY</span>
               <span class="review-stars">★★★★★</span>
@@ -188,6 +193,64 @@
             <p>We monitor growth every session and share transparent, plain-language reports so you always know what is working and what milestone comes next.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Therapy Promo Packages -->
+    <section class="promo-section" aria-labelledby="promo-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="badge-pill">THERAPY PROMOS</div>
+          <h2 id="promo-title">Therapy Promo Packages</h2>
+          <p class="intro">Choose a session package with extra support and savings for your family.</p>
+        </div>
+
+        <div class="promo-grid">
+          <article class="promo-card">
+            <div class="promo-card-top">
+              <span class="promo-label">Promo A</span>
+              <h3>10 Sessions</h3>
+            </div>
+            <div class="promo-card-content">
+              <p class="promo-session-count">10 therapy sessions</p>
+              <p class="promo-bonus">+ 1 free session</p>
+              <p class="promo-price">₱12,000</p>
+              <a class="promo-link" href="#contact">Ask about Promo A <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="promo-card">
+            <div class="promo-card-top">
+              <span class="promo-label">Promo B</span>
+              <h3>15 Sessions</h3>
+            </div>
+            <div class="promo-card-content">
+              <p class="promo-session-count">15 therapy sessions</p>
+              <p class="promo-bonus">+ 2 free sessions</p>
+              <p class="promo-price">₱18,000</p>
+              <a class="promo-link" href="#contact">Ask about Promo B <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="promo-card promo-card-featured">
+            <div class="promo-card-top">
+              <span class="promo-label">Promo C</span>
+              <h3>20 Sessions</h3>
+            </div>
+            <div class="promo-card-content">
+              <p class="promo-session-count">20 therapy sessions</p>
+              <ul class="promo-inclusions">
+                <li>2 free sessions</li>
+                <li>Free assessment</li>
+                <li>Uniform and handbook</li>
+              </ul>
+              <p class="promo-price">₱24,000</p>
+              <a class="promo-link" href="#contact">Ask about Promo C <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        </div>
+
+        <p class="promo-note"><strong>Non-promo availment:</strong> Minimum of 6 sessions required for all new and existing clients.</p>
       </div>
     </section>
 
