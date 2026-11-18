@@ -1,110 +1,464 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hope and Bloom | ABA Therapy Center</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Figtree:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hope and Bloom | Joyful, Play-Based ABA Therapy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="wrap">
-<header class="top">
-<a class="brand" href="#top">Hope and Bloom</a>
-<nav aria-label="Main"><a href="#approach">Approach</a><a href="#services">Services</a><a href="#faq">Questions</a><a class="btn" href="#contact" style="margin-left:1.25rem">Book a consultation</a></nav>
-</header>
 
-<main id="top">
-<div class="hero">
-<div>
-<h1>Every child grows at their own pace. We help them bloom.</h1>
-<p class="lead">Hope and Bloom is an ABA therapy center that builds communication, daily living, and social skills through play, patience, and plans made with your family.</p>
-<div class="acts"><a class="btn" href="#contact">Book a free consultation</a><a class="btn ghost" href="#visit">What to expect</a></div>
-</div>
-<svg class="bloom" viewBox="0 0 400 400" role="img" aria-label="A flower blooming, one petal at a time">
-<g transform="translate(200 200)">
-<g fill="#7B5CC4"><ellipse class="petal p1" cx="0" cy="-80" rx="38" ry="80" transform="rotate(0)"/></g>
-<g fill="#E58DB5"><ellipse class="petal p2" cx="0" cy="-80" rx="38" ry="80" transform="rotate(60)"/></g>
-<g fill="#5BB98A"><ellipse class="petal p3" cx="0" cy="-80" rx="38" ry="80" transform="rotate(120)"/></g>
-<g fill="#7B5CC4"><ellipse class="petal p4" cx="0" cy="-80" rx="38" ry="80" transform="rotate(180)"/></g>
-<g fill="#E58DB5"><ellipse class="petal p5" cx="0" cy="-80" rx="38" ry="80" transform="rotate(240)"/></g>
-<g fill="#5BB98A"><ellipse class="petal p6" cx="0" cy="-80" rx="38" ry="80" transform="rotate(300)"/></g>
-<circle class="core" r="40" fill="#F2B632"/>
-</g>
-</svg>
-</div>
-</main>
-</div>
+  <!-- Top Navigation Header -->
+  <header class="top">
+    <div class="wrap nav-container">
+      <a class="brand" href="#top" aria-label="Hope and Bloom Home">
+        <span class="brand-icon">
+          <!-- Flower icon SVG -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="#E89B2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3" fill="#E89B2B"></circle>
+            <path d="M12 2a4 4 0 0 0-4 4c0 2 2 3 4 3 2 0 4-1 4-3a4 4 0 0 0-4-4z" fill="#19564E" stroke="none"></path>
+            <path d="M12 22a4 4 0 0 0 4-4c0-2-2-3-4-3-2 0-4 1-4 3a4 4 0 0 0 4 4z" fill="#19564E" stroke="none"></path>
+            <path d="M2 12a4 4 0 0 0 4 4c2 0 3-2 3-4 0-2-1-4-3-4a4 4 0 0 0-4 4z" fill="#E66F53" stroke="none"></path>
+            <path d="M22 12a4 4 0 0 0-4-4c-2 0-3 2-3 4 0 2 1 4 3 4a4 4 0 0 0 4-4z" fill="#E66F53" stroke="none"></path>
+          </svg>
+        </span>
+        <span>Hope and Bloom</span>
+      </a>
 
-<section id="approach" class="band">
-<div class="wrap">
-<h2>How we work with your child</h2>
-<p class="intro">ABA (applied behavior analysis) teaches skills by breaking them into small steps and rewarding progress. We keep sessions warm, play-based, and led by your child's interests.</p>
-<div class="cols">
-<div><h3>Plans built with you</h3><p>You tell us your goals. A Board Certified Behavior Analyst (BCBA) turns them into a plan and reviews it with you often.</p></div>
-<div><h3>Learning through play</h3><p>Skills are taught inside games, snacks, and routines your child already enjoys, so progress carries over to home and school.</p></div>
-<div><h3>Progress you can see</h3><p>We track data every session and share it in plain language, so you always know what is working.</p></div>
-</div>
-</div>
-</section>
+      <nav class="main-nav" aria-label="Main Navigation">
+        <a class="nav-link" href="#approach">Our Approach</a>
+        <a class="nav-link" href="#services">Programs</a>
+        <a class="nav-link" href="#roadmap">How It Works</a>
+        <a class="nav-link" href="#faq">Questions</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
 
-<section id="services">
-<div class="wrap">
-<h2>Services</h2>
-<p class="intro">Programs are matched to your child's age, needs, and goals.</p>
-<div class="services">
-<div><h3>Early intervention</h3><p>One-on-one therapy for young children building first words, play, and routines.</p></div>
-<div><h3>Communication skills</h3><p>Speech, gestures, picture systems, or devices, whichever helps your child say what they need.</p></div>
-<div><h3>Social skills groups</h3><p>Small groups that practice sharing, turn-taking, and making friends.</p></div>
-<div><h3>Daily living skills</h3><p>Dressing, toileting, mealtimes, and other routines that build independence.</p></div>
-<div><h3>Parent training</h3><p>Hands-on coaching so you can use the same strategies at home.</p></div>
-<div><h3>School transition support</h3><p>Planning and coordination with teachers for a smooth move into school.</p></div>
-</div>
-</div>
-</section>
+      <div class="nav-actions">
+        <a class="btn" href="#contact">
+          <span>Book consultation</span>
+          <span class="btn-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </header>
 
-<section id="visit" class="band">
-<div class="wrap">
-<h2>What your first weeks look like</h2>
-<p class="intro">There are no surprises. Here is how getting started works.</p>
-<ol class="steps">
-<li><h3>Free consultation</h3><p>Meet the team, tour the center, and ask anything.</p></li>
-<li><h3>Assessment</h3><p>We get to know your child's strengths, needs, and interests.</p></li>
-<li><h3>Your plan</h3><p>We write goals together and agree on a schedule.</p></li>
-<li><h3>Start sessions</h3><p>Therapy begins at your child's pace, with regular reviews.</p></li>
-</ol>
-</div>
-</section>
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="wrap hero-grid">
+        <div class="hero-content">
+          <div class="badge-pill">
+            <span>✨</span> EARLY LEARNING &amp; THERAPY, MADE JOYFUL
+          </div>
 
-<section id="faq">
-<div class="wrap">
-<h2>Questions parents ask</h2>
-<details><summary>Is ABA therapy right for my child?</summary><p>ABA can help children with autism and other developmental needs. The consultation and assessment help us tell you honestly whether our program fits.</p></details>
-<details><summary>How many hours a week will my child attend?</summary><p>It depends on your child's goals and your family's schedule. We recommend a number after the assessment and adjust it as your child grows.</p></details>
-<details><summary>Can I watch or join sessions?</summary><p>Yes. Parent involvement is part of the plan, and we will show you how to practice skills at home.</p></details>
-<details><summary>Do you accept insurance?</summary><p>Ask us during your consultation. We will explain what is covered and the options available to you.</p></details>
-</div>
-</section>
+          <h1 class="hero-title">
+            Every Child Grows at Their Own Pace. We Help Them 
+            <span class="highlight-container">
+              Bloom
+              <svg class="wavy-stroke" viewBox="0 0 140 18" preserveAspectRatio="none">
+                <path d="M4 14 Q 35 3, 70 12 T 136 7" />
+              </svg>
+            </span>
+          </h1>
 
-<section id="contact" class="band">
-<div class="wrap contact">
-<div>
-<h2>Start with a conversation</h2>
-<p class="intro" style="margin-bottom:1rem">Tell us a little about your child. We will reply within two business days to set up a free consultation.</p>
-<p class="muted">Phone, email, and address: add your center's details here.</p>
-</div>
-<form id="f" style="color:var(--ink)">
-<label>Your name<input name="name" required autocomplete="name"></label>
-<label>Email<input name="email" type="email" required autocomplete="email"></label>
-<label>Child's age<select name="age"><option>Under 3</option><option>3 to 5</option><option>6 to 12</option><option>13 and up</option></select></label>
-<label>How can we help?<textarea name="msg"></textarea></label>
-<button class="btn" type="submit">Request a consultation</button>
-<p id="ok" role="status">Thank you. We will be in touch soon.</p>
-</form>
-</div>
-</section>
+          <p class="hero-lead">
+            A joyful, goal-led learning experience that helps children build the communication, confidence, social connection, and everyday skills they need for life.
+          </p>
 
-<footer><div class="wrap">&copy; 2026 Hope and Bloom ABA Therapy Center</div></footer>
-<script src="script.js"></script>
+          <div class="hero-acts">
+            <a class="btn" href="#contact">
+              <span>Book a free consultation</span>
+              <span class="btn-arrow">→</span>
+            </a>
+            <a class="btn ghost" href="#approach">
+              <span>What to expect</span>
+            </a>
+          </div>
+
+          <!-- Environment Setting Chips (as in reference) -->
+          <div class="setting-chips">
+            <div class="chip">
+              <span class="chip-icon">🏡</span> Home-based
+            </div>
+            <div class="chip">
+              <span class="chip-icon">🏢</span> Center-based
+            </div>
+            <div class="chip">
+              <span class="chip-icon">🎒</span> School Readiness
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Composition with Blobs & Badges -->
+        <div class="hero-visual">
+          <div class="hero-blob-coral" aria-hidden="true"></div>
+          <div class="hero-blob-gold" aria-hidden="true"></div>
+          <div class="hero-dot-accent" aria-hidden="true"></div>
+
+          <div class="photo-card">
+            <!-- Warm photograph of teacher/therapist engaged in playful learning -->
+            <img 
+              src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=900&q=80" 
+              alt="Therapist and happy young child playing and learning together with colorful developmental toys" 
+              loading="eager"
+            />
+            
+            <!-- Floating top right pill badge -->
+            <div class="floating-pill-tag">
+              <span>🏡</span> HOME &amp; CENTER CARE
+            </div>
+
+            <!-- Floating bottom left review card -->
+            <div class="floating-review-card">
+              <span class="review-headline">GROWING EVERY DAY</span>
+              <span class="review-stars">★★★★★</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust & Quality Banner (Reference "KLV At A Glance" equivalent) -->
+    <div class="glance-banner">
+      <div class="wrap glance-grid">
+        <div class="glance-item">
+          <div class="glance-icon">🧩</div>
+          <div class="glance-text">
+            <h4>Play-Led Learning</h4>
+            <p>Joyful, interest-driven therapy sessions</p>
+          </div>
+        </div>
+
+        <div class="glance-item">
+          <div class="glance-icon">📋</div>
+          <div class="glance-text">
+            <h4>BCBA-Led Plans</h4>
+            <p>Personalized goals built with your family</p>
+          </div>
+        </div>
+
+        <div class="glance-item">
+          <div class="glance-icon">🏡</div>
+          <div class="glance-text">
+            <h4>Flexible Settings</h4>
+            <p>In-center, in-home &amp; school support</p>
+          </div>
+        </div>
+
+        <div class="glance-item">
+          <div class="glance-icon">🤝</div>
+          <div class="glance-text">
+            <h4>Parent Coaching</h4>
+            <p>Strategies that carry over seamlessly at home</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Approach Section -->
+    <section id="approach" class="approach-section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="badge-pill">OUR PHILOSOPHY</div>
+          <h2>How We Help Your Child Bloom</h2>
+          <p class="intro">
+            Applied Behavior Analysis (ABA) teaches essential skills by breaking them into achievable, bite-sized steps and celebrating every milestone. We keep every session warm, respectful, and led by your child's natural curiosity.
+          </p>
+        </div>
+
+        <div class="cols-cards">
+          <div class="approach-card">
+            <div class="card-badge-icon">🎯</div>
+            <h3>Plans Built With You</h3>
+            <p>You know your child best. A Board Certified Behavior Analyst (BCBA) listens to your family's priorities to create an individualized growth plan and reviews it with you continuously.</p>
+          </div>
+
+          <div class="approach-card">
+            <div class="card-badge-icon">🧸</div>
+            <h3>Learning Through Play</h3>
+            <p>Skills are woven directly into games, favorite songs, snack times, and routines your child already loves, ensuring real progress carries over into daily life.</p>
+          </div>
+
+          <div class="approach-card">
+            <div class="card-badge-icon">📊</div>
+            <h3>Progress You Can See</h3>
+            <p>We monitor growth every session and share transparent, plain-language reports so you always know what is working and what milestone comes next.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="badge-pill">CORE PROGRAMS</div>
+          <h2>Programs Matched to Every Need</h2>
+          <p class="intro">Each child is unique. Our therapy programs are custom-tailored to your child's age, sensory profile, and developmental milestones.</p>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-box">
+            <div class="service-top">
+              <span class="service-pill">Ages 18mo – 6yrs</span>
+              <h3>Early Intervention</h3>
+              <p>Intensive, warm one-on-one therapy for toddlers and young children building foundational words, imitation, play, and emotional regulation.</p>
+            </div>
+            <a class="service-link" href="#contact">Learn more <span>→</span></a>
+          </div>
+
+          <div class="service-box">
+            <div class="service-top">
+              <span class="service-pill">All Ages</span>
+              <h3>Communication Skills</h3>
+              <p>Verbal speech, gestures, PECS, or AAC devices — we empower your child with the exact tools they need to express their needs and thoughts.</p>
+            </div>
+            <a class="service-link" href="#contact">Learn more <span>→</span></a>
+          </div>
+
+          <div class="service-box">
+            <div class="service-top">
+              <span class="service-pill">Peer Groups</span>
+              <h3>Social Skills &amp; Play</h3>
+              <p>Small, carefully matched peer groups where children practice sharing, taking turns, reciprocal play, and making authentic friendships.</p>
+            </div>
+            <a class="service-link" href="#contact">Learn more <span>→</span></a>
+          </div>
+
+          <div class="service-box">
+            <div class="service-top">
+              <span class="service-pill">Independence</span>
+              <h3>Daily Living Routines</h3>
+              <p>Fostering autonomy in everyday essentials: independent dressing, mealtime habits, personal hygiene, and gentle toileting routines.</p>
+            </div>
+            <a class="service-link" href="#contact">Learn more <span>→</span></a>
+          </div>
+
+          <div class="service-box">
+            <div class="service-top">
+              <span class="service-pill">Family First</span>
+              <h3>Parent Training &amp; Coaching</h3>
+              <p>Hands-on coaching and practical guidance for parents, siblings, and caregivers so positive habits thrive smoothly at home.</p>
+            </div>
+            <a class="service-link" href="#contact">Learn more <span>→</span></a>
+          </div>
+
+          <div class="service-box">
+            <div class="service-top">
+              <span class="service-pill">School Ready</span>
+              <h3>School Transition Support</h3>
+              <p>Collaborative coordination with teachers, IEP advocacy, and classroom-readiness skills for confident school integration.</p>
+            </div>
+            <a class="service-link" href="#contact">Learn more <span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- First Weeks Roadmap -->
+    <section id="roadmap" class="steps-section">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="badge-pill">GETTING STARTED</div>
+          <h2>What Your First Weeks Look Like</h2>
+          <p class="intro">We believe in complete transparency and clarity. Here is our straightforward step-by-step path to starting therapy.</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">01</div>
+            <h3>Free Consultation</h3>
+            <p>Connect with our clinical director, tour our warm center, discuss your concerns, and ask all your questions.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">02</div>
+            <h3>Observation &amp; Assessment</h3>
+            <p>We observe and play with your child to understand their unique strengths, favorite motivators, and areas for growth.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">03</div>
+            <h3>Custom Care Plan</h3>
+            <p>We collaboratively craft clear goals, schedule therapy hours that fit your family, and coordinate insurance details.</p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">04</div>
+            <h3>Sessions Begin</h3>
+            <p>Therapy launches at your child's pace, filled with fun, positive encouragement, and regular progress reviews.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion -->
+    <section id="faq">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="badge-pill">COMMON QUESTIONS</div>
+          <h2>Questions Parents Ask</h2>
+          <p class="intro">Finding the right support for your child is a big step. Here are answers to what families ask most.</p>
+        </div>
+
+        <div class="faq-wrap">
+          <details class="faq-item" open>
+            <summary class="faq-q">
+              <span>Is ABA therapy right for my child?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-answer">
+              ABA therapy is evidence-based and effective for children with Autism Spectrum Disorder (ASD), sensory integration challenges, and developmental delays. Our initial consultation gives you an honest, pressure-free evaluation of whether our approach matches your child's specific needs.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              <span>How many hours per week will my child need?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-answer">
+              Every child's program is personalized. Comprehensive programs may run 15–30 hours weekly, while focused programs (targeting specific skills like communication or social play) may require 8–12 hours. We always recommend schedules based on clinical necessity and your family's routine.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              <span>Can parents observe or participate in sessions?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-answer">
+              Absolutely! Parent participation is a cornerstone of our success. We encourage observation and host regular hands-on parent coaching sessions so you feel empowered using positive reinforcement strategies at home.
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-q">
+              <span>Do you accept health insurance?</span>
+              <span class="faq-icon">+</span>
+            </summary>
+            <div class="faq-answer">
+              Yes, we work with many major insurance providers and assist families with benefit verification and pre-authorization. During your consultation, we will review your coverage options and guide you step-by-step.
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact & Consultation Request -->
+    <section id="contact" class="contact-section">
+      <div class="wrap contact-layout">
+        <div class="contact-info">
+          <div class="badge-pill">LET'S CONNECT</div>
+          <h2>Start with a Warm Conversation</h2>
+          <p class="intro">
+            Tell us a little about your child and your family goals. We will reply within one business day to set up a free, no-obligation consultation.
+          </p>
+
+          <div class="contact-perks">
+            <div class="perk-item">
+              <div class="perk-check">✓</div>
+              <span>No long waitlists — prompt initial evaluation</span>
+            </div>
+            <div class="perk-item">
+              <div class="perk-check">✓</div>
+              <span>100% confidential and family-centered consultation</span>
+            </div>
+            <div class="perk-item">
+              <div class="perk-check">✓</div>
+              <span>Guidance with insurance verification &amp; intake</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-card-box">
+          <form id="f">
+            <div class="form-group">
+              <label for="name">Your Name</label>
+              <input id="name" name="name" required autocomplete="name" placeholder="e.g. Sarah Jenkins">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="sarah@example.com">
+            </div>
+
+            <div class="form-group">
+              <label for="age">Child's Age</label>
+              <select id="age" name="age">
+                <option value="under-3">Under 3 years old</option>
+                <option value="3-5" selected>3 to 5 years old</option>
+                <option value="6-12">6 to 12 years old</option>
+                <option value="13-plus">13+ years old</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="msg">How Can We Help Your Child?</label>
+              <textarea id="msg" name="msg" placeholder="Share a little about your child's strengths, needs, or what you hope to achieve..."></textarea>
+            </div>
+
+            <button class="btn" type="submit" style="width: 100%; margin-top: 0.5rem;">
+              <span>Request a Consultation</span>
+              <span class="btn-arrow">→</span>
+            </button>
+
+            <div id="ok" role="status">
+              ✨ Thank you! We received your message and will reach out within 24 hours.
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <a class="brand" href="#top">
+            <span class="brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#E89B2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3" fill="#E89B2B"></circle>
+                <path d="M12 2a4 4 0 0 0-4 4c0 2 2 3 4 3 2 0 4-1 4-3a4 4 0 0 0-4-4z" fill="#19564E" stroke="none"></path>
+                <path d="M12 22a4 4 0 0 0 4-4c0-2-2-3-4-3-2 0-4 1-4 3a4 4 0 0 0 4 4z" fill="#19564E" stroke="none"></path>
+                <path d="M2 12a4 4 0 0 0 4 4c2 0 3-2 3-4 0-2-1-4-3-4a4 4 0 0 0-4 4z" fill="#E66F53" stroke="none"></path>
+                <path d="M22 12a4 4 0 0 0-4-4c-2 0-3 2-3 4 0 2 1 4 3 4a4 4 0 0 0 4-4z" fill="#E66F53" stroke="none"></path>
+              </svg>
+            </span>
+            <span>Hope and Bloom</span>
+          </a>
+          <p style="color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem;">
+            Empowering every child with individualized, play-based ABA therapy.
+          </p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#approach">Approach</a>
+          <a href="#services">Programs</a>
+          <a href="#roadmap">How It Works</a>
+          <a href="#faq">FAQs</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Hope and Bloom ABA Therapy Center. All rights reserved.</div>
+        <div>Care with kindness, science, and patience.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Message Button (Matching reference) -->
+  <a href="#contact" class="floating-chat" aria-label="Message Us">
+    <span>💬</span>
+    <span>Message us</span>
+  </a>
+
+  <script src="script.js"></script>
 </body>
 </html>
