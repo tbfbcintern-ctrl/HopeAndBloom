@@ -1,7 +1,9 @@
 /* Hope and Bloom — Warm & Joyful ABA Therapy Design */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500;700;900&display=swap');
 
 :root {
+  --font-body: 'Roboto', Arial, sans-serif;
+  --font-heading: 'Poppins', sans-serif;
   --bg: #FAF7F0;
   --bg-soft: #F4EFE6;
   --surface: #FFFFFF;
@@ -50,14 +52,14 @@ body {
     radial-gradient(circle at 88% 8%, rgba(254, 246, 233, 0.6) 0%, transparent 40%),
     radial-gradient(circle at 95% 45%, rgba(253, 238, 234, 0.4) 0%, transparent 35%);
   color: var(--ink);
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   color: var(--ink-heading);
   line-height: 1.15;
   margin: 0;
@@ -97,6 +99,10 @@ header.top {
   transition: all 0.2s ease;
 }
 
+header.top.is-hidden {
+  transform: translateY(-100%);
+}
+
 .nav-container {
   display: flex;
   justify-content: space-between;
@@ -108,7 +114,7 @@ header.top {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 800;
   font-size: 1.45rem;
   color: var(--teal-primary);
@@ -613,6 +619,85 @@ section {
   line-height: 1.6;
 }
 
+/* ================= MISSION & VISION ================= */
+.purpose-section {
+  background: linear-gradient(180deg, var(--bg) 0%, #F1F7F4 100%);
+}
+
+.purpose-heading {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.purpose-heading .badge-pill {
+  margin-bottom: 0.8rem;
+}
+
+.purpose-heading h2 {
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-weight: 800;
+}
+
+.purpose-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.purpose-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  overflow: hidden;
+  min-height: 100%;
+  padding: 2.25rem;
+  border: 1px solid rgba(205, 230, 225, 0.8);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-md);
+}
+
+.purpose-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background: linear-gradient(90deg, var(--teal-primary), #77B79C);
+  content: "";
+}
+
+.purpose-card-vision::before {
+  background: linear-gradient(90deg, var(--gold), var(--coral));
+}
+
+.purpose-card-icon {
+  display: flex;
+  flex: 0 0 48px;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: var(--teal-soft);
+  font-size: 1.4rem;
+}
+
+.purpose-card-vision .purpose-card-icon {
+  background: var(--gold-soft);
+}
+
+.purpose-card h3 {
+  margin: 0.1rem 0 0.75rem;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.purpose-card p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
 /* ================= APPROACH SECTION ================= */
 .approach-section {
   background: var(--bg-soft);
@@ -774,7 +859,7 @@ section {
   margin-top: auto;
   padding-top: 1.5rem;
   color: var(--teal-primary);
-  font-family: 'Bricolage Grotesque', 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-heading);
   font-size: 2rem;
   font-weight: 800;
 }
@@ -943,7 +1028,7 @@ details.faq-item[open] {
 
 summary.faq-q {
   cursor: pointer;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-heading);
   font-weight: 700;
   font-size: 1.15rem;
   color: var(--ink-heading);
@@ -1165,6 +1250,40 @@ footer {
   box-shadow: 0 12px 28px rgba(0, 132, 255, 0.45);
 }
 
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 88px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--teal-primary);
+  color: #FFFFFF;
+  font-size: 1.5rem;
+  line-height: 1;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.2s ease;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--teal-hover);
+}
+
 /* ================= RESPONSIVE MEDIA QUERIES ================= */
 @media (max-width: 992px) {
   .hero-grid {
@@ -1200,6 +1319,24 @@ footer {
     display: none;
   }
 
+  .purpose-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .purpose-card {
+    gap: 1rem;
+    padding: 1.6rem 1.35rem;
+  }
+
+  .purpose-card-icon {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    font-size: 1.2rem;
+  }
+
   .glance-grid {
     grid-template-columns: 1fr;
   }
@@ -1218,5 +1355,10 @@ footer {
     right: 16px;
     padding: 0.7rem 1.1rem;
     font-size: 0.88rem;
+  }
+
+  .back-to-top {
+    right: 16px;
+    bottom: 76px;
   }
 }

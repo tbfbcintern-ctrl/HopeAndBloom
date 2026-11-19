@@ -1,6 +1,35 @@
 // Hope and Bloom Interactive Scripts
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Hide the sticky navigation while scrolling down and restore it while scrolling up
+  const header = document.querySelector('header.top');
+  if (header) {
+    let previousScrollY = window.scrollY;
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY <= 0 || currentScrollY < previousScrollY) {
+        header.classList.remove('is-hidden');
+      } else if (currentScrollY > previousScrollY && currentScrollY > 80) {
+        header.classList.add('is-hidden');
+      }
+
+      previousScrollY = currentScrollY;
+    }, { passive: true });
+  }
+
+  // Show the back-to-top control after scrolling away from the top
+  const backToTop = document.querySelector('.back-to-top');
+  if (backToTop) {
+    const updateBackToTopVisibility = () => {
+      backToTop.classList.toggle('is-visible', window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', updateBackToTopVisibility, { passive: true });
+    updateBackToTopVisibility();
+  }
+
   // Form submission handler
   const form = document.getElementById('f');
   const okStatus = document.getElementById('ok');
