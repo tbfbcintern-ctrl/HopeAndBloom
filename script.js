@@ -1,6 +1,115 @@
 // Hope and Bloom Interactive Scripts
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Open the matching details dialog from an About the Center card
+  const aboutDetailDialog = document.getElementById('about-detail-dialog');
+  if (aboutDetailDialog) {
+    const aboutDetails = {
+      focus: {
+        title: 'Our Focus',
+        icon: '🎯',
+        summary: 'Individualized, evidence-based developmental and ABA services.',
+        points: [
+          'Growth plans are shaped around each child and the priorities their family shares.',
+          'Play-based activities help children practice communication, imitation, and everyday skills.',
+          'Progress is monitored and shared with families in clear, easy-to-understand updates.'
+        ]
+      },
+      approach: {
+        title: 'Our Approach',
+        icon: '🧸',
+        summary: 'Compassionate care, professional excellence, and a nurturing learning environment.',
+        points: [
+          'Sessions are warm, respectful, and guided by each child’s natural curiosity.',
+          'Skills are practiced through games, songs, and familiar daily routines.',
+          'Learning goals are broken into achievable steps, with every milestone celebrated.'
+        ]
+      },
+      partners: {
+        title: 'Our Partners',
+        icon: '🤝',
+        summary: 'Children, families, teachers, and qualified professionals.',
+        points: [
+          'Families help shape their child’s goals and receive practical coaching.',
+          'Qualified professionals can work with teachers to support school transitions.',
+          'Regular progress updates help everyone stay informed and support consistent learning.'
+        ]
+      }
+    };
+    const detailIcon = document.getElementById('about-detail-icon');
+    const detailTitle = document.getElementById('about-detail-title');
+    const detailSummary = document.getElementById('about-detail-summary');
+    const detailPoints = document.getElementById('about-detail-points');
+    const closeButton = aboutDetailDialog.querySelector('.about-detail-close');
+
+    document.querySelectorAll('.about-center-card-trigger').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const detail = aboutDetails[trigger.dataset.aboutDetail];
+        if (!detail) {
+          console.error(`Missing About the Center details for "${trigger.dataset.aboutDetail}".`);
+          return;
+        }
+
+        const card = trigger.closest('.about-center-card');
+        if (!card) {
+          console.error('About the Center detail trigger is missing its card.');
+          return;
+        }
+
+        const cardBounds = card.getBoundingClientRect();
+        detailIcon.textContent = detail.icon;
+        detailTitle.textContent = detail.title;
+        detailSummary.textContent = detail.summary;
+        detailPoints.replaceChildren();
+        detail.points.forEach((point) => {
+          const item = document.createElement('li');
+          item.textContent = point;
+          detailPoints.append(item);
+        });
+
+        aboutDetailDialog.classList.remove('is-opening');
+        aboutDetailDialog.showModal();
+        const dialogBounds = aboutDetailDialog.getBoundingClientRect();
+        aboutDetailDialog.style.setProperty(
+          '--origin-x',
+          `${cardBounds.left + cardBounds.width / 2 - (dialogBounds.left + dialogBounds.width / 2)}px`
+        );
+        aboutDetailDialog.style.setProperty(
+          '--origin-y',
+          `${cardBounds.top + cardBounds.height / 2 - (dialogBounds.top + dialogBounds.height / 2)}px`
+        );
+        aboutDetailDialog.style.setProperty('--origin-scale-x', String(cardBounds.width / dialogBounds.width));
+        aboutDetailDialog.style.setProperty('--origin-scale-y', String(cardBounds.height / dialogBounds.height));
+        aboutDetailDialog.classList.add('is-opening');
+      });
+    });
+
+    closeButton.addEventListener('click', () => aboutDetailDialog.close());
+    aboutDetailDialog.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        aboutDetailDialog.close();
+      }
+    });
+    aboutDetailDialog.addEventListener('click', (event) => {
+      if (event.target === aboutDetailDialog) {
+        aboutDetailDialog.close();
+      }
+    });
+    aboutDetailDialog.addEventListener('animationend', (event) => {
+      if (event.target === aboutDetailDialog && event.animationName === 'about-dialog-expand') {
+        aboutDetailDialog.classList.remove('is-opening');
+      }
+    });
+    aboutDetailDialog.addEventListener('close', () => {
+      aboutDetailDialog.classList.remove('is-opening');
+      aboutDetailDialog.style.removeProperty('--origin-x');
+      aboutDetailDialog.style.removeProperty('--origin-y');
+      aboutDetailDialog.style.removeProperty('--origin-scale-x');
+      aboutDetailDialog.style.removeProperty('--origin-scale-y');
+    });
+  }
+
   // Hide the sticky navigation while scrolling down and restore it while scrolling up
   const header = document.querySelector('header.top');
   if (header) {
