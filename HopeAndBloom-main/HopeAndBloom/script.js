@@ -1,6 +1,6 @@
 // Hope and Bloom Interactive Scripts
 
-document.addEventListener('DOMContentLoaded', () => {
+export function initializeInteractions() {
   const configureDialog = (dialog, onClose) => {
     const closeButton = dialog.querySelector('.about-detail-close');
     if (!closeButton) {
@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
           homeRequestStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
       }
-    } else {
+    } else if (!homeRequestForm || !homeRequestStatus) {
       console.error('The home-based request form is missing a required element.');
     }
   }
@@ -279,4 +279,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startAutoplay();
   }
-});
+}
