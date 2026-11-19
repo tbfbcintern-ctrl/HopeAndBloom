@@ -1,9 +1,66 @@
 // Hope and Bloom Interactive Scripts
 
 document.addEventListener('DOMContentLoaded', () => {
+  const configureDialog = (dialog, onClose) => {
+    const closeButton = dialog.querySelector('.about-detail-close');
+    if (!closeButton) {
+      console.error(`Missing close button for dialog "${dialog.id}".`);
+      return null;
+    }
+
+    const closeDialog = () => {
+      dialog.close();
+      onClose?.();
+    };
+
+    closeButton.addEventListener('click', closeDialog);
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeDialog();
+      }
+    });
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) {
+        closeDialog();
+      }
+    });
+    dialog.addEventListener('animationend', (event) => {
+      if (event.target === dialog && event.animationName === 'about-dialog-expand') {
+        dialog.classList.remove('is-opening');
+      }
+    });
+    dialog.addEventListener('close', () => {
+      dialog.classList.remove('is-opening');
+      dialog.style.removeProperty('--origin-x');
+      dialog.style.removeProperty('--origin-y');
+      dialog.style.removeProperty('--origin-scale-x');
+      dialog.style.removeProperty('--origin-scale-y');
+    });
+
+    return (origin) => {
+      const originBounds = origin.getBoundingClientRect();
+      dialog.classList.remove('is-opening');
+      dialog.showModal();
+      const dialogBounds = dialog.getBoundingClientRect();
+      dialog.style.setProperty(
+        '--origin-x',
+        `${originBounds.left + originBounds.width / 2 - (dialogBounds.left + dialogBounds.width / 2)}px`
+      );
+      dialog.style.setProperty(
+        '--origin-y',
+        `${originBounds.top + originBounds.height / 2 - (dialogBounds.top + dialogBounds.height / 2)}px`
+      );
+      dialog.style.setProperty('--origin-scale-x', String(originBounds.width / dialogBounds.width));
+      dialog.style.setProperty('--origin-scale-y', String(originBounds.height / dialogBounds.height));
+      dialog.classList.add('is-opening');
+    };
+  };
+
   // Open the matching details dialog from an About the Center card
   const aboutDetailDialog = document.getElementById('about-detail-dialog');
   if (aboutDetailDialog) {
+    const openAboutDetailDialog = configureDialog(aboutDetailDialog);
     const aboutDetails = {
       focus: {
         title: 'Our Focus',
@@ -40,74 +97,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailTitle = document.getElementById('about-detail-title');
     const detailSummary = document.getElementById('about-detail-summary');
     const detailPoints = document.getElementById('about-detail-points');
-    const closeButton = aboutDetailDialog.querySelector('.about-detail-close');
+    if (openAboutDetailDialog) {
+      document.querySelectorAll('.about-center-card-trigger').forEach((trigger) => {
+        trigger.addEventListener('click', () => {
+          const detail = aboutDetails[trigger.dataset.aboutDetail];
+          if (!detail) {
+            console.error(`Missing About the Center details for "${trigger.dataset.aboutDetail}".`);
+            return;
+          }
 
-    document.querySelectorAll('.about-center-card-trigger').forEach((trigger) => {
-      trigger.addEventListener('click', () => {
-        const detail = aboutDetails[trigger.dataset.aboutDetail];
-        if (!detail) {
-          console.error(`Missing About the Center details for "${trigger.dataset.aboutDetail}".`);
-          return;
-        }
+          const card = trigger.closest('.about-center-card');
+          if (!card) {
+            console.error('About the Center detail trigger is missing its card.');
+            return;
+          }
 
-        const card = trigger.closest('.about-center-card');
-        if (!card) {
-          console.error('About the Center detail trigger is missing its card.');
-          return;
-        }
+          detailIcon.textContent = detail.icon;
+          detailTitle.textContent = detail.title;
+          detailSummary.textContent = detail.summary;
+          detailPoints.replaceChildren();
+          detail.points.forEach((point) => {
+            const item = document.createElement('li');
+            item.textContent = point;
+            detailPoints.append(item);
+          });
+          openAboutDetailDialog(card);
+        });
+      });
+    }
+  }
 
-        const cardBounds = card.getBoundingClientRect();
-        detailIcon.textContent = detail.icon;
-        detailTitle.textContent = detail.title;
-        detailSummary.textContent = detail.summary;
-        detailPoints.replaceChildren();
-        detail.points.forEach((point) => {
-          const item = document.createElement('li');
-          item.textContent = point;
-          detailPoints.append(item);
+  // Collect a home-based support request without storing or sending personal details
+  const homeBasedDialog = document.getElementById('home-based-dialog');
+  if (homeBasedDialog) {
+    const homeBasedTrigger = document.querySelector('.setting-chips [aria-controls="home-based-dialog"]');
+    const homeRequestForm = document.getElementById('home-request-form');
+    const homeRequestStatus = document.getElementById('home-request-status');
+
+    if (homeBasedTrigger && homeRequestForm && homeRequestStatus) {
+      const openHomeBasedDialog = configureDialog(homeBasedDialog, () => {
+        homeRequestForm.reset();
+        homeRequestStatus.classList.remove('is-visible');
+        homeRequestStatus.textContent = '';
+      });
+
+      if (openHomeBasedDialog) {
+        homeBasedTrigger.addEventListener('click', () => {
+          homeRequestStatus.classList.remove('is-visible');
+          openHomeBasedDialog(homeBasedTrigger);
         });
 
-        aboutDetailDialog.classList.remove('is-opening');
-        aboutDetailDialog.showModal();
-        const dialogBounds = aboutDetailDialog.getBoundingClientRect();
-        aboutDetailDialog.style.setProperty(
-          '--origin-x',
-          `${cardBounds.left + cardBounds.width / 2 - (dialogBounds.left + dialogBounds.width / 2)}px`
-        );
-        aboutDetailDialog.style.setProperty(
-          '--origin-y',
-          `${cardBounds.top + cardBounds.height / 2 - (dialogBounds.top + dialogBounds.height / 2)}px`
-        );
-        aboutDetailDialog.style.setProperty('--origin-scale-x', String(cardBounds.width / dialogBounds.width));
-        aboutDetailDialog.style.setProperty('--origin-scale-y', String(cardBounds.height / dialogBounds.height));
-        aboutDetailDialog.classList.add('is-opening');
-      });
-    });
-
-    closeButton.addEventListener('click', () => aboutDetailDialog.close());
-    aboutDetailDialog.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        aboutDetailDialog.close();
+        homeRequestForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const guardianName = document.getElementById('home-guardian-name').value.trim();
+          homeRequestStatus.textContent = `Thank you, ${guardianName}. Review your details above. This website is not connected to a booking service, so your information has not been sent or saved.`;
+          homeRequestStatus.classList.add('is-visible');
+          homeRequestStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
       }
-    });
-    aboutDetailDialog.addEventListener('click', (event) => {
-      if (event.target === aboutDetailDialog) {
-        aboutDetailDialog.close();
-      }
-    });
-    aboutDetailDialog.addEventListener('animationend', (event) => {
-      if (event.target === aboutDetailDialog && event.animationName === 'about-dialog-expand') {
-        aboutDetailDialog.classList.remove('is-opening');
-      }
-    });
-    aboutDetailDialog.addEventListener('close', () => {
-      aboutDetailDialog.classList.remove('is-opening');
-      aboutDetailDialog.style.removeProperty('--origin-x');
-      aboutDetailDialog.style.removeProperty('--origin-y');
-      aboutDetailDialog.style.removeProperty('--origin-scale-x');
-      aboutDetailDialog.style.removeProperty('--origin-scale-y');
-    });
+    } else {
+      console.error('The home-based request form is missing a required element.');
+    }
   }
 
   // Hide the sticky navigation while scrolling down and restore it while scrolling up

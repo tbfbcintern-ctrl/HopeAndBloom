@@ -107,48 +107,46 @@ header.top.is-hidden {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   padding: 1rem 0;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.45rem;
-  color: var(--teal-primary);
-  letter-spacing: -0.02em;
+  flex: 0 0 auto;
 }
 
-.brand-icon {
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border-radius: 10px;
+.brand-logo {
+  display: block;
+  height: auto;
+  border-radius: 8px;
+  object-fit: contain;
 }
 
-.brand-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+header .brand-logo {
+  width: clamp(210px, 18vw, 260px);
+}
+
+.footer-brand .brand-logo {
+  width: min(340px, 100%);
 }
 
 nav.main-nav {
   display: flex;
   align-items: center;
-  gap: 1.8rem;
+  gap: 0.9rem;
+  flex: 0 1 auto;
+  justify-content: center;
 }
 
 nav.main-nav a.nav-link {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   color: var(--muted);
   transition: color 0.15s ease;
   position: relative;
+  white-space: nowrap;
 }
 
 nav.main-nav a.nav-link:hover {
@@ -159,6 +157,7 @@ nav.main-nav a.nav-link:hover {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex: 0 0 auto;
 }
 
 /* ================= BUTTONS & PILLS ================= */
@@ -306,13 +305,14 @@ nav.main-nav a.nav-link:hover {
   background: #FFFFFF;
   border: 1px solid var(--line);
   color: var(--ink);
+  font-family: inherit;
   font-size: 0.88rem;
   font-weight: 600;
   padding: 0.5rem 1rem;
   border-radius: var(--radius-full);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
   transition: all 0.2s ease;
-  cursor: default;
+  cursor: pointer;
 }
 
 .chip:hover {
@@ -975,6 +975,63 @@ section {
   content: "✓";
 }
 
+.home-request-dialog {
+  width: min(48rem, calc(100% - 2rem));
+}
+
+.home-request-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.home-request-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem 1rem;
+}
+
+.home-request-full {
+  grid-column: 1 / -1;
+}
+
+.home-request-optional {
+  color: var(--muted-light);
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+.home-request-form textarea {
+  min-height: 84px;
+}
+
+.home-request-privacy {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.home-request-submit {
+  width: 100%;
+}
+
+.home-request-status {
+  display: none;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(57, 136, 98, 0.2);
+  border-radius: var(--radius-sm);
+  background: var(--leaf-soft);
+  color: var(--leaf);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.home-request-status.is-visible {
+  display: block;
+}
+
 /* ================= APPROACH SECTION ================= */
 .approach-section {
   background: var(--bg-soft);
@@ -1610,6 +1667,16 @@ footer {
     display: none;
   }
 
+  header .brand-logo {
+    width: clamp(7rem, 40vw, 10rem);
+  }
+
+  .nav-actions .btn {
+    gap: 0.35rem;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.78rem;
+  }
+
   .purpose-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -1649,6 +1716,14 @@ footer {
     border-radius: 22px;
   }
 
+  .home-request-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .home-request-full {
+    grid-column: auto;
+  }
+
   .glance-grid {
     grid-template-columns: 1fr;
   }
@@ -1672,6 +1747,18 @@ footer {
   .back-to-top {
     right: 16px;
     bottom: 76px;
+  }
+}
+
+@media (max-width: 380px) {
+  header .brand-logo {
+    width: 7rem;
+  }
+
+  .nav-actions .btn {
+    gap: 0.25rem;
+    padding: 0.5rem 0.55rem;
+    font-size: 0.72rem;
   }
 }
 

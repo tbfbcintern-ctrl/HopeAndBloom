@@ -15,10 +15,7 @@
   <header class="top">
     <div class="wrap nav-container">
       <a class="brand" href="#top" aria-label="Hope and Bloom Home">
-        <span class="brand-icon">
-          <img src="images/hope-and-bloom-logo.png" alt="Hope and Bloom logo">
-        </span>
-        <span>Hope and Bloom</span>
+        <img class="brand-logo" src="images/hope-and-bloom-full-logo.png" alt="">
       </a>
 
       <nav class="main-nav" aria-label="Main Navigation">
@@ -75,12 +72,12 @@
 
           <!-- Environment Setting Chips (as in reference) -->
           <div class="setting-chips">
-            <div class="chip">
+            <button class="chip" type="button" aria-haspopup="dialog" aria-controls="home-based-dialog">
               <span class="chip-icon">🏡</span> Home-based
-            </div>
-            <div class="chip">
+            </button>
+            <a class="chip" href="https://www.google.com/maps/search/?api=1&amp;query=ABA+therapy+center+near+me" target="_blank" rel="noopener noreferrer" aria-label="Find nearby ABA therapy centers on Google Maps, opens in a new tab">
               <span class="chip-icon">🏢</span> Center-based
-            </div>
+            </a>
             <div class="chip">
               <span class="chip-icon">🎒</span> School Readiness
             </div>
@@ -245,6 +242,63 @@
         <h3>What this means at Hope and Bloom</h3>
         <ul id="about-detail-points"></ul>
       </div>
+    </dialog>
+
+    <dialog class="about-detail-dialog home-request-dialog" id="home-based-dialog" aria-labelledby="home-request-title" aria-describedby="home-request-description">
+      <div class="about-detail-dialog-top">
+        <div class="about-detail-dialog-icon" aria-hidden="true">🏡</div>
+        <button class="about-detail-close" type="button" aria-label="Close home-based request form">×</button>
+      </div>
+      <p class="about-detail-eyebrow">HOME-BASED ABA</p>
+      <h2 id="home-request-title">Tell Us About Your Family</h2>
+      <p class="about-detail-summary" id="home-request-description">Share a few details so we can understand your home-based support needs.</p>
+
+      <form class="home-request-form" id="home-request-form">
+        <div class="home-request-fields">
+          <div class="form-group">
+            <label for="home-guardian-name">Parent or Guardian Name</label>
+            <input id="home-guardian-name" name="guardianName" autocomplete="name" required autofocus placeholder="Your full name">
+          </div>
+
+          <div class="form-group">
+            <label for="home-contact-number">Contact Number</label>
+            <input id="home-contact-number" name="contactNumber" type="tel" autocomplete="tel" required placeholder="e.g. 09xx xxx xxxx">
+          </div>
+
+          <div class="form-group">
+            <label for="home-email">Email Address <span class="home-request-optional">(optional)</span></label>
+            <input id="home-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+          </div>
+
+          <div class="form-group">
+            <label for="home-child-age">Child's Age</label>
+            <select id="home-child-age" name="childAge" required>
+              <option value="" selected disabled>Select age range</option>
+              <option value="under-3">Under 3 years old</option>
+              <option value="3-5">3 to 5 years old</option>
+              <option value="6-12">6 to 12 years old</option>
+              <option value="13-plus">13+ years old</option>
+            </select>
+          </div>
+
+          <div class="form-group home-request-full">
+            <label for="home-address">Home Address</label>
+            <input id="home-address" name="homeAddress" autocomplete="street-address" required placeholder="Street, barangay, city">
+          </div>
+
+          <div class="form-group home-request-full">
+            <label for="home-request-notes">Preferred Schedule or Support Needs <span class="home-request-optional">(optional)</span></label>
+            <textarea id="home-request-notes" name="notes" rows="3" placeholder="Share a preferred schedule or what you hope to work on."></textarea>
+          </div>
+        </div>
+
+        <p class="home-request-privacy">This form is a preview only. Your information will not be sent or saved because online booking is not connected yet.</p>
+        <button class="btn home-request-submit" type="submit">
+          <span>Review Request</span>
+          <span class="btn-arrow">→</span>
+        </button>
+        <div class="home-request-status" id="home-request-status" role="status" aria-live="polite"></div>
+      </form>
     </dialog>
 
     <!-- Approach Section -->
@@ -567,17 +621,8 @@
     <div class="wrap">
       <div class="footer-content">
         <div class="footer-brand">
-          <a class="brand" href="#top">
-            <span class="brand-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#E89B2B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="3" fill="#E89B2B"></circle>
-                <path d="M12 2a4 4 0 0 0-4 4c0 2 2 3 4 3 2 0 4-1 4-3a4 4 0 0 0-4-4z" fill="#19564E" stroke="none"></path>
-                <path d="M12 22a4 4 0 0 0 4-4c0-2-2-3-4-3-2 0-4 1-4 3a4 4 0 0 0 4 4z" fill="#19564E" stroke="none"></path>
-                <path d="M2 12a4 4 0 0 0 4 4c2 0 3-2 3-4 0-2-1-4-3-4a4 4 0 0 0-4 4z" fill="#E66F53" stroke="none"></path>
-                <path d="M22 12a4 4 0 0 0-4-4c-2 0-3 2-3 4 0 2 1 4 3 4a4 4 0 0 0 4-4z" fill="#E66F53" stroke="none"></path>
-              </svg>
-            </span>
-            <span>Hope and Bloom</span>
+          <a class="brand" href="#top" aria-label="Hope and Bloom Home">
+            <img class="brand-logo" src="images/hope-and-bloom-full-logo.png" alt="">
           </a>
           <p style="color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem;">
             Empowering every child with individualized, play-based ABA therapy.
