@@ -1,4 +1,5 @@
 // Hope and Bloom Interactive Scripts
+import { saveDemoInquiry } from './src/inquiries.js';
 
 export function initializeInteractions() {
   const configureDialog = (dialog, onClose) => {
@@ -191,18 +192,56 @@ export function initializeInteractions() {
 
   // Form submission handler
   const form = document.getElementById('f');
-  const okStatus = document.getElementById('ok');
+  const formError = document.getElementById('form-error');
+  const formSuccess = document.getElementById('form-success');
+  const submitAnotherButton = document.getElementById('submit-another');
 
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (okStatus) {
-        okStatus.style.display = 'block';
-        okStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      const formData = new FormData(form);
+      try {
+        if (!formSuccess) {
+          throw new Error('The confirmation panel is missing from the page.');
+        }
+
+        saveDemoInquiry({
+          name: String(formData.get('name') || ''),
+          email: String(formData.get('email') || ''),
+          age: String(formData.get('age') || ''),
+          message: String(formData.get('msg') || '')
+        });
+
+        form.reset();
+        form.hidden = true;
+        formSuccess.hidden = false;
+        formSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (error) {
+        console.error('Unable to save the demo inquiry.', error);
+        if (formError) {
+          formError.textContent = `Unable to save this demo inquiry: ${error.message}`;
+          formError.style.display = 'block';
+          formError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
-      form.reset();
     });
   }
+
+  submitAnotherButton?.addEventListener('click', () => {
+    if (!form || !formSuccess) {
+      console.error('The consultation form or confirmation panel is missing.');
+      return;
+    }
+
+    formSuccess.hidden = true;
+    form.hidden = false;
+    if (formError) {
+      formError.textContent = '';
+      formError.style.display = 'none';
+    }
+    document.getElementById('name')?.focus();
+  });
 
   // Setting chips interaction
   const chips = document.querySelectorAll('.chip');

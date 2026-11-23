@@ -2,24 +2,46 @@
 
 Hope and Bloom Child Development Center website.
 
-## Development
+## Pagpapatakbo ng site sa local computer
 
-The site uses React components, Vite, and the existing CSS stylesheet.
+Kailangan ang [Node.js](https://nodejs.org/) para magamit ang npm. Sa PowerShell,
+buksan muna ang folder na may `package.json`. Kung nasa labas na folder ng
+na-download na project ka (`HopeAndBloom-main (1)`), patakbuhin:
 
 ```powershell
-cd HopeAndBloom
-npm install
-npm run dev
-    
-
-
-cd .\HopeAndBloom-main\HopeAndBloom
-npm install
-npm run dev
-
+cd .\HopeAndBloom-main\HopeAndBloom-main\HopeAndBloom
+npm.cmd install
+npm.cmd run dev
 ```
 
-Create a production build with `npm run build`.
+Ginagamit ang `npm.cmd` dahil maaaring harangin ng PowerShell execution policy
+ang `npm` command. Kung ang binuksan mo sa VS Code ay ang folder na may README
+na ito, gamitin ang `cd .\HopeAndBloom` sa halip na mahabang `cd` sa itaas.
+
+Buksan sa browser ang URL na ipapakita ni Vite sa terminal, karaniwan ay
+`http://localhost:5173/`. Para ihinto ang server, pindutin ang `Ctrl+C` sa
+terminal.
+
+### Admin preview
+
+Buksan ang `http://localhost:5173/admin` para makita ang admin dashboard preview.
+Lalabas sa **Inquiries** ang mga ipinasa sa contact form, at mase-save ang mga ito
+sa local storage ng kasalukuyang browser. Walang authentication o encryption;
+gamitin lamang ang test details at huwag maglagay ng totoong impormasyon ng
+pamilya o bata. Maaaring magdagdag ng internal comment at markahang done ang
+inquiry. Sa **Appointments**, maaari ring pumili ng petsa sa calendar at gumawa
+ng demo appointment. Lahat ng ito ay local demo data lang; walang booking o
+message na ipinapadala sa email o server.
+
+### Production build
+
+Mula sa folder na may `package.json`, patakbuhin:
+
+```powershell
+npm.cmd run build
+```
+
+## Project structure
 
 The page entry point is `HopeAndBloom/index.html`; the React app starts in
 `HopeAndBloom/src/main.jsx`. Reusable page components are in

@@ -414,10 +414,24 @@ function ContactSection() {
               <span>Request a Consultation</span>
               <span className="btn-arrow">→</span>
             </button>
-            <div id="ok" role="status">
-              ✨ Thank you! We received your message and will reach out within 24 hours.
-            </div>
+            <div id="form-error" role="status" aria-live="polite" />
           </form>
+          <section
+            className="contact-success"
+            id="form-success"
+            aria-labelledby="form-success-title"
+            aria-live="polite"
+            hidden
+          >
+            <span className="contact-success-icon" aria-hidden="true">✓</span>
+            <h3 id="form-success-title">Thank you!</h3>
+            <p>Your consultation request has been saved in this browser.</p>
+            <p className="contact-success-note">This is a local demo. No email was sent and the center has not received your request.</p>
+            <button className="btn" id="submit-another" type="button">
+              <span>Submit another request</span>
+              <span className="btn-arrow">→</span>
+            </button>
+          </section>
         </div>
       </div>
     </section>
