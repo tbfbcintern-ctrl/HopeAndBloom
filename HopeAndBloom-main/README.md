@@ -10,7 +10,7 @@ The site uses React components, Vite, and the existing CSS stylesheet.
 cd HopeAndBloom
 npm install
 npm run dev
-
+    
 
 
 cd .\HopeAndBloom-main\HopeAndBloom
