@@ -209,6 +209,9 @@ export function initializeInteractions() {
         saveDemoInquiry({
           name: String(formData.get('name') || ''),
           email: String(formData.get('email') || ''),
+          phone: String(formData.get('phone') || ''),
+          program: String(formData.get('program') || ''),
+          preferredContact: String(formData.get('preferredContact') || 'either'),
           age: String(formData.get('age') || ''),
           message: String(formData.get('msg') || '')
         });

@@ -370,7 +370,7 @@ function ContactSection() {
           <div className="badge-pill">LET'S CONNECT</div>
           <h2>Start with a Warm Conversation</h2>
           <p className="intro">
-            Tell us a little about your child and your family goals. We will reply within one business day to set up a free, no-obligation consultation.
+            Tell us what kind of support you are looking for and how you would prefer us to reach you. Please do not include sensitive medical details.
           </p>
           <div className="contact-perks">
             <div className="perk-item">
@@ -390,16 +390,41 @@ function ContactSection() {
         <div className="contact-card-box">
           <form id="f">
             <div className="form-group">
-              <label htmlFor="name">Your Name</label>
+              <label htmlFor="name">Parent or Guardian Name</label>
               <input id="name" name="name" required autoComplete="name" placeholder="e.g. Sarah Jenkins" />
             </div>
             <div className="form-group">
-              <label htmlFor="email">Email Address</label>
-              <input id="email" name="email" type="email" required autoComplete="email" placeholder="sarah@example.com" />
+              <label htmlFor="email">Email Address (optional)</label>
+              <input id="email" name="email" type="email" autoComplete="email" maxLength="254" placeholder="sarah@example.com" />
             </div>
             <div className="form-group">
-              <label htmlFor="age">Child's Age</label>
-              <select id="age" name="age" defaultValue="3-5">
+              <label htmlFor="phone">Phone Number (optional)</label>
+              <input id="phone" name="phone" type="tel" autoComplete="tel" maxLength="40" placeholder="e.g. 09xx xxx xxxx" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="preferred-contact">Preferred Contact Method</label>
+              <select id="preferred-contact" name="preferredContact" defaultValue="either" required>
+                <option value="either">Either email or phone</option>
+                <option value="email">Email</option>
+                <option value="phone">Phone</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="program">Program of Interest</label>
+              <select id="program" name="program" defaultValue="Not sure yet">
+                <option value="Not sure yet">Not sure yet</option>
+                <option>Early Intervention</option>
+                <option>Communication Skills</option>
+                <option>Social Skills &amp; Play</option>
+                <option>Daily Living Routines</option>
+                <option>Parent Training &amp; Coaching</option>
+                <option>School Transition Support</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="age">Child's Age Range (optional)</label>
+              <select id="age" name="age" defaultValue="">
+                <option value="">Prefer not to say</option>
                 <option value="under-3">Under 3 years old</option>
                 <option value="3-5">3 to 5 years old</option>
                 <option value="6-12">6 to 12 years old</option>
@@ -407,8 +432,8 @@ function ContactSection() {
               </select>
             </div>
             <div className="form-group">
-              <label htmlFor="msg">How Can We Help Your Child?</label>
-              <textarea id="msg" name="msg" placeholder="Share a little about your child's strengths, needs, or what you hope to achieve..." />
+              <label htmlFor="msg">Message (optional)</label>
+              <textarea id="msg" name="msg" maxLength="2000" placeholder="What kind of support are you looking for? Please do not include diagnoses or sensitive medical details." />
             </div>
             <button className="btn" type="submit" style={{ width: '100%', marginTop: '0.5rem' }}>
               <span>Request a Consultation</span>

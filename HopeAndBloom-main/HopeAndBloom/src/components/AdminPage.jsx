@@ -4,6 +4,7 @@ import {
   deleteDemoInquiry,
   getDemoInquiries,
   INQUIRIES_UPDATED_EVENT,
+  saveDemoInquiry,
   updateDemoInquiry
 } from '../inquiries.js';
 import {
@@ -29,6 +30,26 @@ const programs = [
   'Parent Training & Coaching',
   'School Transition Support'
 ];
+
+const inquiryStatusLabels = {
+  new: 'New',
+  contacted: 'Contacted',
+  scheduled: 'Scheduled',
+  closed: 'Closed'
+};
+
+const preferredContactLabels = {
+  email: 'Email',
+  phone: 'Phone',
+  either: 'Email or phone'
+};
+
+const ageRangeLabels = {
+  'under-3': 'Under 3 years old',
+  '3-5': '3 to 5 years old',
+  '6-12': '6 to 12 years old',
+  '13-plus': '13+ years old'
+};
 
 const sectionCopy = {
   dashboard: {
@@ -94,30 +115,39 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
     }
   };
 
-  const markDone = () => {
-    onUpdate(inquiry.id, { status: inquiry.status === 'done' ? 'open' : 'done' });
-  };
-
   return (
-    <article className={`admin-inquiry-card${inquiry.status === 'done' ? ' is-done' : ''}`}>
+    <article className={`admin-inquiry-card${inquiry.status === 'closed' ? ' is-closed' : ''}`}>
       <div className="admin-inquiry-heading">
         <div>
           <div className="admin-inquiry-title-row">
             <h3>{inquiry.name}</h3>
-            <span className={`admin-inquiry-status${inquiry.status === 'done' ? ' is-done' : ''}`}>
-              {inquiry.status === 'done' ? 'Done' : 'Open'}
+            <span className={`admin-inquiry-status${inquiry.status === 'closed' ? ' is-closed' : ''}`}>
+              {inquiryStatusLabels[inquiry.status]}
             </span>
           </div>
-          <a href={`mailto:${inquiry.email}`}>{inquiry.email}</a>
+          <div className="admin-inquiry-contact">
+            {inquiry.email && <a href={`mailto:${inquiry.email}`}>{inquiry.email}</a>}
+            {inquiry.phone && <a href={`tel:${inquiry.phone}`}>{inquiry.phone}</a>}
+          </div>
         </div>
         <div className="admin-inquiry-actions">
           <button
             className="admin-done-button"
             type="button"
-            onClick={markDone}
+            onClick={() => onUpdate(inquiry.id, { status: inquiry.status === 'closed' ? 'new' : 'closed' })}
           >
-            {inquiry.status === 'done' ? 'Reopen' : 'Mark as done'}
+            {inquiry.status === 'closed' ? 'Reopen' : 'Close'}
           </button>
+          <select
+            className="admin-inquiry-status-select"
+            aria-label={`Follow-up status for ${inquiry.name}`}
+            value={inquiry.status}
+            onChange={(event) => onUpdate(inquiry.id, { status: event.target.value })}
+          >
+            {Object.entries(inquiryStatusLabels).map(([value, label]) => (
+              <option value={value} key={value}>{label}</option>
+            ))}
+          </select>
           <button
             className="admin-delete-button"
             type="button"
@@ -129,10 +159,21 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
         </div>
       </div>
       <div className="admin-inquiry-meta">
-        <span>Child age: {inquiry.age}</span>
+        {inquiry.program && <span>Program: {inquiry.program}</span>}
+        {inquiry.age && <span>Child age: {ageRangeLabels[inquiry.age] || inquiry.age}</span>}
+        {inquiry.preferredContact && <span>Prefers: {preferredContactLabels[inquiry.preferredContact] || inquiry.preferredContact}</span>}
         <time dateTime={inquiry.createdAt}>{new Date(inquiry.createdAt).toLocaleString()}</time>
       </div>
       {inquiry.message && <p className="admin-inquiry-message">{inquiry.message}</p>}
+      <div className="admin-inquiry-follow-up">
+        <label htmlFor={`inquiry-follow-up-${inquiry.id}`}>Follow-up date</label>
+        <input
+          id={`inquiry-follow-up-${inquiry.id}`}
+          type="date"
+          value={inquiry.followUpDate}
+          onChange={(event) => onUpdate(inquiry.id, { followUpDate: event.target.value })}
+        />
+      </div>
       <div className="admin-inquiry-comment">
         <label htmlFor={`inquiry-comment-${inquiry.id}`}>Internal comment</label>
         <textarea
@@ -161,6 +202,8 @@ export function AdminPage() {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [inquiries, setInquiries] = useState([]);
   const [inquiryError, setInquiryError] = useState('');
+  const [inquiryNotice, setInquiryNotice] = useState('');
+  const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [appointmentError, setAppointmentError] = useState('');
   const [appointmentNotice, setAppointmentNotice] = useState('');
@@ -221,6 +264,28 @@ export function AdminPage() {
     } catch (error) {
       setInquiryError(error.message);
       return false;
+    }
+  };
+
+  const addInquiry = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      saveDemoInquiry({
+        name: String(formData.get('name') || ''),
+        email: String(formData.get('email') || ''),
+        age: String(formData.get('age') || ''),
+        message: String(formData.get('message') || '')
+      });
+      form.reset();
+      setInquiryError('');
+      setInquiryNotice('Inquiry added in this browser.');
+      setShowInquiryForm(false);
+    } catch (error) {
+      setInquiryNotice('');
+      setInquiryError(error.message);
     }
   };
 
@@ -296,7 +361,7 @@ export function AdminPage() {
     if (!items.length) {
       return (
         <EmptyState icon="✉" title="No inquiries to show">
-          Submit the website contact form with test details to see a demo inquiry here. No message is sent.
+            Submit the website contact form or add a demo inquiry. No message is sent to the center.
         </EmptyState>
       );
     }
@@ -400,9 +465,22 @@ export function AdminPage() {
                     <h2 id="admin-recent-title">Recent inquiries</h2>
                     <p>New messages from families</p>
                   </div>
-                  <button className="admin-text-button" type="button" onClick={() => setActiveSection('inquiries')}>
-                    View inquiries <span aria-hidden="true">→</span>
-                  </button>
+                  <div className="admin-panel-heading-actions">
+                    <button
+                      className="admin-add-inquiry-button"
+                      type="button"
+                      onClick={() => {
+                        setActiveSection('inquiries');
+                        setShowInquiryForm(true);
+                        setInquiryNotice('');
+                      }}
+                    >
+                      Add inquiry
+                    </button>
+                    <button className="admin-text-button" type="button" onClick={() => setActiveSection('inquiries')}>
+                      View inquiries <span aria-hidden="true">→</span>
+                    </button>
+                  </div>
                 </div>
                 {renderInquiryList(inquiries.slice(0, 3))}
               </section>
@@ -416,8 +494,73 @@ export function AdminPage() {
                   <h2>Website contact form</h2>
                   <p>{inquiries.length} demo {inquiries.length === 1 ? 'inquiry' : 'inquiries'} stored in this browser</p>
                 </div>
-                <span className="admin-readonly-label">LOCAL DEMO</span>
+                <button
+                  className="admin-add-inquiry-button"
+                  type="button"
+                  aria-expanded={showInquiryForm}
+                  onClick={() => {
+                    setShowInquiryForm((isOpen) => !isOpen);
+                    setInquiryNotice('');
+                  }}
+                >
+                  {showInquiryForm ? 'Cancel' : 'Add inquiry'}
+                </button>
               </div>
+              {showInquiryForm && (
+                <form
+                  className="admin-inquiry-form"
+                  id="admin-add-inquiry-form"
+                  onSubmit={addInquiry}
+                >
+                  <div className="admin-inquiry-form-fields">
+                    <div className="form-group">
+                      <label htmlFor="admin-inquiry-name">Parent or guardian name</label>
+                      <input id="admin-inquiry-name" name="name" required maxLength="120" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="admin-inquiry-email">Email (optional)</label>
+                      <input id="admin-inquiry-email" name="email" type="email" maxLength="254" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="admin-inquiry-phone">Phone (optional)</label>
+                      <input id="admin-inquiry-phone" name="phone" type="tel" maxLength="40" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="admin-inquiry-preferred-contact">Preferred contact method</label>
+                      <select id="admin-inquiry-preferred-contact" name="preferredContact" defaultValue="either" required>
+                        <option value="either">Either email or phone</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="admin-inquiry-program">Program of interest</label>
+                      <select id="admin-inquiry-program" name="program" defaultValue="Not sure yet">
+                        <option>Not sure yet</option>
+                        {programs.map((program) => <option key={program}>{program}</option>)}
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="admin-inquiry-age">Child's age range (optional)</label>
+                      <select id="admin-inquiry-age" name="age" defaultValue="">
+                        <option value="">Prefer not to say</option>
+                        <option>Under 3 years old</option>
+                        <option>3 to 5 years old</option>
+                        <option>6 to 12 years old</option>
+                        <option>13+ years old</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="admin-inquiry-message">Message (optional)</label>
+                      <textarea id="admin-inquiry-message" name="message" rows="3" maxLength="2000" placeholder="Do not include sensitive medical details." />
+                    </div>
+                  </div>
+                  <div className="admin-inquiry-form-actions">
+                    <button className="admin-done-button" type="submit">Save inquiry</button>
+                  </div>
+                </form>
+              )}
+              {inquiryNotice && <p className="admin-inquiry-notice" role="status">{inquiryNotice}</p>}
               {renderInquiryList(inquiries)}
             </section>
           )}
