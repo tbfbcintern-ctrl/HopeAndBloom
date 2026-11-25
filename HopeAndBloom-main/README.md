@@ -26,16 +26,14 @@ terminal.
 
 Buksan ang `http://localhost:5173/admin` para makita ang admin dashboard preview.
 Lalabas sa **Inquiries** ang mga ipinasa sa contact form, at mase-save ang mga ito
-sa local storage ng kasalukuyang browser. Maaari ring manu-manong magdagdag ng
-inquiry mula sa dashboard o **Inquiries**. Walang authentication o encryption;
+sa local storage ng kasalukuyang browser. Walang authentication o encryption;
 gamitin lamang ang test details at huwag maglagay ng totoong impormasyon ng
-pamilya o bata. May age range (optional), program of interest, preferred
-contact method, at message fields ang contact form. Sa **Inquiries**, maaaring
-itakda ang follow-up status (New, Contacted, Scheduled, o Closed), magdagdag ng
-follow-up date, at mag-iwan ng internal comment. Sa **Appointments**, maaari
-ring pumili ng petsa sa calendar at gumawa ng demo appointment. Lahat ng ito ay
-local demo data lang; walang booking o
-message na ipinapadala sa email o server.
+pamilya o bata. Maaaring magdagdag ng internal comment at markahang done ang
+inquiry. Sa **Appointments**, maaari ring pumili ng petsa sa calendar at gumawa
+ng demo appointment. Sa **Programs**, maaari ring magdagdag, mag-edit, at
+mag-publish o magtago ng serbisyo; makikita ang updates sa public Programs
+section gamit ang parehong browser. Lahat ng ito ay local demo data lang at
+hindi sini-sync sa ibang device o ipinapadala sa email o server.
 
 ### Production build
 

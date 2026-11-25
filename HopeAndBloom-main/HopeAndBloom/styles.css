@@ -1223,6 +1223,23 @@ section {
 }
 
 /* ================= SERVICES SECTION ================= */
+.service-program-error,
+.service-program-empty {
+  margin-bottom: 1.25rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.service-program-error {
+  border-color: rgba(230, 111, 83, 0.3);
+  background: var(--coral-soft);
+  color: #a53d2a;
+}
+
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1540,7 +1557,7 @@ textarea {
   background: #fff;
 }
 
-.admin-inquiry-card.is-closed {
+.admin-inquiry-card.is-done {
   border-color: #d3e6dc;
   background: #fcfefc;
 }
@@ -1566,22 +1583,6 @@ textarea {
   gap: 0.55rem;
 }
 
-.admin-inquiry-actions {
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.admin-inquiry-status-select {
-  width: auto;
-  min-width: 7rem;
-  padding: 0.4rem 0.55rem;
-  border-color: #d3e6dc;
-  border-radius: 8px;
-  color: var(--teal-primary);
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
 .admin-inquiry-title-row {
   flex-wrap: wrap;
   margin-bottom: 0.2rem;
@@ -1596,15 +1597,9 @@ textarea {
   font-weight: 800;
 }
 
-.admin-inquiry-status.is-closed {
+.admin-inquiry-status.is-done {
   background: var(--leaf-soft);
   color: var(--leaf);
-}
-
-.admin-inquiry-contact {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 0.85rem;
 }
 
 .admin-inquiry-heading a,
@@ -1632,21 +1627,6 @@ textarea {
   font-size: 0.82rem;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-}
-
-.admin-inquiry-follow-up {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: 0.85rem;
-  color: var(--muted);
-  font-size: 0.78rem;
-}
-
-.admin-inquiry-follow-up input {
-  width: auto;
-  padding: 0.45rem 0.6rem;
-  font-size: 0.78rem;
 }
 
 .admin-delete-button {
@@ -2197,78 +2177,6 @@ footer {
   font-size: 0.78rem;
 }
 
-.admin-panel-heading-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.85rem;
-  flex-wrap: wrap;
-}
-
-.admin-add-inquiry-button {
-  flex: 0 0 auto;
-  padding: 0.55rem 0.8rem;
-  border: 1px solid #d3e6dc;
-  border-radius: 8px;
-  background: var(--leaf-soft);
-  color: var(--teal-primary);
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.admin-add-inquiry-button:hover {
-  background: #dff0e7;
-}
-
-.admin-inquiry-form {
-  display: grid;
-  gap: 0.8rem;
-  margin-top: 1.25rem;
-  padding: 1rem;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #fcfefc;
-}
-
-.admin-inquiry-form-fields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-
-.admin-inquiry-form .form-group {
-  gap: 0.3rem;
-}
-
-.admin-inquiry-form label {
-  font-size: 0.78rem;
-}
-
-.admin-inquiry-form input,
-.admin-inquiry-form select,
-.admin-inquiry-form textarea {
-  padding: 0.6rem 0.7rem;
-  font-size: 0.8rem;
-}
-
-.admin-inquiry-form-fields .form-group:last-child {
-  grid-column: 1 / -1;
-}
-
-.admin-inquiry-form-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.admin-inquiry-notice {
-  margin-top: 1rem;
-  color: var(--leaf);
-  font-size: 0.78rem;
-  font-weight: 700;
-}
-
 .admin-text-button {
   padding: 0.5rem 0;
   border: 0;
@@ -2328,38 +2236,126 @@ footer {
   letter-spacing: 0.08em;
 }
 
-.admin-program-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7rem;
-  margin: 1.25rem 0 0;
-  padding: 0;
-  list-style: none;
+.admin-programs-help {
+  margin-top: 0.9rem;
+  color: var(--muted);
+  font-size: 0.82rem;
 }
 
-.admin-program-list li {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.85rem;
+.admin-program-manager {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  align-items: start;
+  gap: 1rem;
+  margin-top: 1.1rem;
+}
+
+.admin-program-manager-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-program-card {
+  padding: 1rem;
   border: 1px solid var(--line);
   border-radius: 11px;
-  color: var(--ink);
-  font-size: 0.84rem;
-  font-weight: 600;
+  background: #fff;
 }
 
-.admin-program-check {
-  display: grid;
-  flex: 0 0 auto;
-  width: 24px;
-  height: 24px;
-  place-items: center;
-  border-radius: 8px;
+.admin-program-card.is-hidden {
+  background: #faf9f6;
+}
+
+.admin-program-card-heading,
+.admin-program-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.admin-program-card-heading h3 {
+  margin-top: 0.4rem;
+  font-size: 0.94rem;
+}
+
+.admin-program-age {
+  margin-top: 0.25rem;
+  color: var(--muted-light);
+  font-size: 0.74rem;
+}
+
+.admin-program-state {
+  display: inline-block;
+  padding: 0.16rem 0.45rem;
+  border-radius: 99px;
+  background: var(--bg-soft);
+  color: var(--muted);
+  font-size: 0.64rem;
+  font-weight: 800;
+}
+
+.admin-program-state.is-published {
   background: var(--leaf-soft);
   color: var(--leaf);
+}
+
+.admin-program-description {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.admin-program-form {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.admin-program-form h3 {
+  font-size: 1rem;
+}
+
+.admin-program-form > p {
+  margin-top: -0.5rem;
+  color: var(--muted);
+  font-size: 0.77rem;
+}
+
+.admin-program-form .form-group {
+  gap: 0.35rem;
+}
+
+.admin-program-form label {
   font-size: 0.78rem;
-  font-weight: 800;
+}
+
+.admin-program-form input,
+.admin-program-form textarea {
+  padding: 0.65rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.admin-program-submit {
+  width: 100%;
+  justify-content: center;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+.admin-program-cancel {
+  padding: 0.45rem;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-program-cancel:hover {
+  color: var(--teal-primary);
 }
 
 .admin-appointment-layout {
@@ -2579,6 +2575,64 @@ footer {
   line-height: 1.45;
 }
 
+.appointment-conflict-dialog {
+  width: min(27rem, calc(100% - 2rem));
+  padding: 1.5rem;
+  border: 0;
+  border-radius: 18px;
+  text-align: center;
+  color: var(--ink);
+  box-shadow: 0 24px 70px rgba(19, 59, 55, 0.24);
+}
+
+.appointment-conflict-dialog::backdrop {
+  background: rgba(19, 59, 55, 0.58);
+  backdrop-filter: blur(5px);
+}
+
+.appointment-conflict-icon {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin: 0 auto 0.9rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--coral-soft);
+  color: #a53d2a;
+  font-size: 1.45rem;
+  font-weight: 900;
+}
+
+.appointment-conflict-eyebrow {
+  margin-bottom: 0.35rem;
+  color: #a53d2a;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.appointment-conflict-dialog h2 {
+  margin: 0 0 0.7rem;
+  font-size: 1.55rem;
+}
+
+.appointment-conflict-dialog p {
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.appointment-conflict-tip {
+  margin-top: 0.75rem;
+  color: var(--teal-primary) !important;
+  font-weight: 800;
+}
+
+.appointment-conflict-close {
+  width: 100%;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
 .admin-settings-panel {
   display: flex;
   align-items: flex-start;
@@ -2739,8 +2793,12 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .admin-program-list {
+  .admin-program-manager {
     grid-template-columns: 1fr;
+  }
+
+  .admin-program-card-heading {
+    flex-direction: column;
   }
 
   .admin-appointment-layout {
@@ -2749,18 +2807,6 @@ footer {
 
   .admin-panel {
     padding: 1rem;
-  }
-
-  .admin-panel-heading {
-    align-items: flex-start;
-  }
-
-  .admin-inquiry-form-fields {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-inquiry-form-fields .form-group:last-child {
-    grid-column: auto;
   }
 
   nav.main-nav {

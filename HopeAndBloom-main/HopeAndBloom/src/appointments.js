@@ -67,6 +67,26 @@ export function saveDemoAppointment({ name, date, time, type, notes }) {
     throw new Error('Please provide a valid appointment date.');
   }
 
+  const today = new Date();
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  if (parsedDate < todayStart) {
+    const pastDateError = new Error('Appointments cannot be booked for a date that has already passed.');
+    pastDateError.code = 'APPOINTMENT_PAST_DATE';
+    throw pastDateError;
+  }
+
+  const conflictingAppointment = readStoredAppointments().find((savedAppointment) =>
+    savedAppointment.date === appointment.date && savedAppointment.time === appointment.time
+  );
+  if (conflictingAppointment) {
+    const conflictError = new Error(
+      `This schedule is full. ${conflictingAppointment.name} already has an appointment on ${appointment.date} at ${appointment.time}.`
+    );
+    conflictError.code = 'APPOINTMENT_CONFLICT';
+    conflictError.appointment = conflictingAppointment;
+    throw conflictError;
+  }
+
   writeStoredAppointments([appointment, ...readStoredAppointments()]);
   return appointment;
 }

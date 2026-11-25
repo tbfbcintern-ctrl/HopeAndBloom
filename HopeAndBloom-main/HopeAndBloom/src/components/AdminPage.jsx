@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import logo from '../../../images/hope-and-bloom-full-logo.png';
 import {
   deleteDemoInquiry,
   getDemoInquiries,
   INQUIRIES_UPDATED_EVENT,
-  saveDemoInquiry,
   updateDemoInquiry
 } from '../inquiries.js';
 import {
@@ -13,6 +12,12 @@ import {
   getDemoAppointments,
   saveDemoAppointment
 } from '../appointments.js';
+import {
+  DEFAULT_PROGRAMS,
+  getPrograms,
+  PROGRAMS_UPDATED_EVENT,
+  savePrograms
+} from '../programs.js';
 
 const navigation = [
   { id: 'dashboard', label: 'Dashboard', icon: '⌂' },
@@ -21,35 +26,6 @@ const navigation = [
   { id: 'programs', label: 'Programs', icon: '✿' },
   { id: 'settings', label: 'Settings', icon: '⚙' }
 ];
-
-const programs = [
-  'Early Intervention',
-  'Communication Skills',
-  'Social Skills & Play',
-  'Daily Living Routines',
-  'Parent Training & Coaching',
-  'School Transition Support'
-];
-
-const inquiryStatusLabels = {
-  new: 'New',
-  contacted: 'Contacted',
-  scheduled: 'Scheduled',
-  closed: 'Closed'
-};
-
-const preferredContactLabels = {
-  email: 'Email',
-  phone: 'Phone',
-  either: 'Email or phone'
-};
-
-const ageRangeLabels = {
-  'under-3': 'Under 3 years old',
-  '3-5': '3 to 5 years old',
-  '6-12': '6 to 12 years old',
-  '13-plus': '13+ years old'
-};
 
 const sectionCopy = {
   dashboard: {
@@ -70,7 +46,7 @@ const sectionCopy = {
   programs: {
     eyebrow: 'CENTER SERVICES',
     title: 'Programs',
-    description: 'The programs currently shown on the Hope and Bloom website.'
+    description: 'Manage the services families see on the Hope and Bloom website.'
   },
   settings: {
     eyebrow: 'ADMINISTRATION',
@@ -115,39 +91,30 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
     }
   };
 
+  const markDone = () => {
+    onUpdate(inquiry.id, { status: inquiry.status === 'done' ? 'open' : 'done' });
+  };
+
   return (
-    <article className={`admin-inquiry-card${inquiry.status === 'closed' ? ' is-closed' : ''}`}>
+    <article className={`admin-inquiry-card${inquiry.status === 'done' ? ' is-done' : ''}`}>
       <div className="admin-inquiry-heading">
         <div>
           <div className="admin-inquiry-title-row">
             <h3>{inquiry.name}</h3>
-            <span className={`admin-inquiry-status${inquiry.status === 'closed' ? ' is-closed' : ''}`}>
-              {inquiryStatusLabels[inquiry.status]}
+            <span className={`admin-inquiry-status${inquiry.status === 'done' ? ' is-done' : ''}`}>
+              {inquiry.status === 'done' ? 'Done' : 'Open'}
             </span>
           </div>
-          <div className="admin-inquiry-contact">
-            {inquiry.email && <a href={`mailto:${inquiry.email}`}>{inquiry.email}</a>}
-            {inquiry.phone && <a href={`tel:${inquiry.phone}`}>{inquiry.phone}</a>}
-          </div>
+          <a href={`mailto:${inquiry.email}`}>{inquiry.email}</a>
         </div>
         <div className="admin-inquiry-actions">
           <button
             className="admin-done-button"
             type="button"
-            onClick={() => onUpdate(inquiry.id, { status: inquiry.status === 'closed' ? 'new' : 'closed' })}
+            onClick={markDone}
           >
-            {inquiry.status === 'closed' ? 'Reopen' : 'Close'}
+            {inquiry.status === 'done' ? 'Reopen' : 'Mark as done'}
           </button>
-          <select
-            className="admin-inquiry-status-select"
-            aria-label={`Follow-up status for ${inquiry.name}`}
-            value={inquiry.status}
-            onChange={(event) => onUpdate(inquiry.id, { status: event.target.value })}
-          >
-            {Object.entries(inquiryStatusLabels).map(([value, label]) => (
-              <option value={value} key={value}>{label}</option>
-            ))}
-          </select>
           <button
             className="admin-delete-button"
             type="button"
@@ -159,21 +126,10 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
         </div>
       </div>
       <div className="admin-inquiry-meta">
-        {inquiry.program && <span>Program: {inquiry.program}</span>}
-        {inquiry.age && <span>Child age: {ageRangeLabels[inquiry.age] || inquiry.age}</span>}
-        {inquiry.preferredContact && <span>Prefers: {preferredContactLabels[inquiry.preferredContact] || inquiry.preferredContact}</span>}
+        <span>Child age: {inquiry.age}</span>
         <time dateTime={inquiry.createdAt}>{new Date(inquiry.createdAt).toLocaleString()}</time>
       </div>
       {inquiry.message && <p className="admin-inquiry-message">{inquiry.message}</p>}
-      <div className="admin-inquiry-follow-up">
-        <label htmlFor={`inquiry-follow-up-${inquiry.id}`}>Follow-up date</label>
-        <input
-          id={`inquiry-follow-up-${inquiry.id}`}
-          type="date"
-          value={inquiry.followUpDate}
-          onChange={(event) => onUpdate(inquiry.id, { followUpDate: event.target.value })}
-        />
-      </div>
       <div className="admin-inquiry-comment">
         <label htmlFor={`inquiry-comment-${inquiry.id}`}>Internal comment</label>
         <textarea
@@ -202,12 +158,17 @@ export function AdminPage() {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [inquiries, setInquiries] = useState([]);
   const [inquiryError, setInquiryError] = useState('');
-  const [inquiryNotice, setInquiryNotice] = useState('');
-  const [showInquiryForm, setShowInquiryForm] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [appointmentError, setAppointmentError] = useState('');
   const [appointmentNotice, setAppointmentNotice] = useState('');
+  const [appointmentConflict, setAppointmentConflict] = useState(null);
+  const appointmentConflictDialogRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState(() => toDateKey(new Date()));
+  const [programs, setPrograms] = useState(DEFAULT_PROGRAMS);
+  const [programError, setProgramError] = useState('');
+  const [programNotice, setProgramNotice] = useState('');
+  const [editingProgramId, setEditingProgramId] = useState('');
+  const [programForm, setProgramForm] = useState({ title: '', age: '', description: '' });
   const section = sectionCopy[activeSection];
 
   useEffect(() => {
@@ -229,19 +190,44 @@ export function AdminPage() {
       }
     };
 
+    const refreshPrograms = () => {
+      try {
+        setPrograms(getPrograms());
+        setProgramError('');
+      } catch (error) {
+        setProgramError(error.message);
+      }
+    };
+
     refreshInquiries();
     refreshAppointments();
+    refreshPrograms();
     window.addEventListener(INQUIRIES_UPDATED_EVENT, refreshInquiries);
     window.addEventListener('storage', refreshInquiries);
     window.addEventListener(APPOINTMENTS_UPDATED_EVENT, refreshAppointments);
     window.addEventListener('storage', refreshAppointments);
+    window.addEventListener(PROGRAMS_UPDATED_EVENT, refreshPrograms);
+    window.addEventListener('storage', refreshPrograms);
     return () => {
       window.removeEventListener(INQUIRIES_UPDATED_EVENT, refreshInquiries);
       window.removeEventListener('storage', refreshInquiries);
       window.removeEventListener(APPOINTMENTS_UPDATED_EVENT, refreshAppointments);
       window.removeEventListener('storage', refreshAppointments);
+      window.removeEventListener(PROGRAMS_UPDATED_EVENT, refreshPrograms);
+      window.removeEventListener('storage', refreshPrograms);
     };
   }, []);
+
+  useEffect(() => {
+    const dialog = appointmentConflictDialogRef.current;
+    if (!dialog) return;
+
+    if (appointmentConflict && !dialog.open) {
+      dialog.showModal();
+    } else if (!appointmentConflict && dialog.open) {
+      dialog.close();
+    }
+  }, [appointmentConflict]);
 
   const removeInquiry = (id) => {
     if (!window.confirm('Delete this demo inquiry from this browser?')) {
@@ -267,28 +253,6 @@ export function AdminPage() {
     }
   };
 
-  const addInquiry = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    try {
-      saveDemoInquiry({
-        name: String(formData.get('name') || ''),
-        email: String(formData.get('email') || ''),
-        age: String(formData.get('age') || ''),
-        message: String(formData.get('message') || '')
-      });
-      form.reset();
-      setInquiryError('');
-      setInquiryNotice('Inquiry added in this browser.');
-      setShowInquiryForm(false);
-    } catch (error) {
-      setInquiryNotice('');
-      setInquiryError(error.message);
-    }
-  };
-
   const addAppointment = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -307,7 +271,18 @@ export function AdminPage() {
       setAppointmentNotice('Demo appointment saved in this browser. No booking was sent to the center.');
     } catch (error) {
       setAppointmentNotice('');
-      setAppointmentError(error.message);
+      if (error.code === 'APPOINTMENT_CONFLICT' || error.code === 'APPOINTMENT_PAST_DATE') {
+        setAppointmentError('');
+        setAppointmentConflict({
+          reason: error.code,
+          name: error.appointment ? error.appointment.name : '',
+          date: selectedDate,
+          time: error.appointment ? error.appointment.time : '',
+          type: error.appointment ? error.appointment.type : ''
+        });
+      } else {
+        setAppointmentError(error.message);
+      }
     }
   };
 
@@ -324,6 +299,80 @@ export function AdminPage() {
       setAppointmentNotice('');
       setAppointmentError(error.message);
     }
+  };
+
+  const persistPrograms = (updatedPrograms, successMessage) => {
+    try {
+      savePrograms(updatedPrograms);
+      setPrograms(updatedPrograms);
+      setProgramError('');
+      setProgramNotice(successMessage);
+      return true;
+    } catch (error) {
+      setProgramNotice('');
+      setProgramError(error.message);
+      return false;
+    }
+  };
+
+  const saveProgram = (event) => {
+    event.preventDefault();
+    const title = programForm.title.trim();
+    const age = programForm.age.trim();
+    const description = programForm.description.trim();
+    const isEditing = Boolean(editingProgramId);
+    const updatedPrograms = isEditing
+      ? programs.map((program) => (
+        program.id === editingProgramId
+          ? { ...program, title, age, description }
+          : program
+      ))
+      : [{
+        id: `program-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        title,
+        age,
+        description,
+        active: true
+      }, ...programs];
+
+    const successMessage = isEditing
+      ? 'Program changes saved in this browser. Published programs appear on the website.'
+      : 'Program added and published on the website in this browser.';
+    if (persistPrograms(updatedPrograms, successMessage)) {
+      setProgramForm({ title: '', age: '', description: '' });
+      setEditingProgramId('');
+    }
+  };
+
+  const editProgram = (program) => {
+    setEditingProgramId(program.id);
+    setProgramForm({
+      title: program.title,
+      age: program.age,
+      description: program.description
+    });
+    setProgramNotice('');
+    setProgramError('');
+  };
+
+  const toggleProgramVisibility = (program) => {
+    const active = !program.active;
+    const updatedPrograms = programs.map((item) => (
+      item.id === program.id ? { ...item, active } : item
+    ));
+    persistPrograms(
+      updatedPrograms,
+      active
+        ? 'Program published on the website in this browser.'
+        : 'Program hidden from the website in this browser.'
+    );
+  };
+
+  const cancelProgramEdit = () => {
+    setProgramForm({ title: '', age: '', description: '' });
+    setEditingProgramId('');
+    setProgramError('');
+    setProgramNotice('');
   };
 
   const selectedDateValue = fromDateKey(selectedDate);
@@ -361,7 +410,7 @@ export function AdminPage() {
     if (!items.length) {
       return (
         <EmptyState icon="✉" title="No inquiries to show">
-            Submit the website contact form or add a demo inquiry. No message is sent to the center.
+          Submit the website contact form with test details to see a demo inquiry here. No message is sent.
         </EmptyState>
       );
     }
@@ -433,7 +482,7 @@ export function AdminPage() {
 
           <div className="admin-preview-notice" role="note">
             <span className="admin-notice-icon" aria-hidden="true">i</span>
-            <p><strong>Local demo only.</strong> Inquiries are stored in this browser, without login or encryption. Use fake test details only; do not enter real family or child information.</p>
+            <p><strong>Local demo only.</strong> Inquiries, appointments, and program settings are stored in this browser, without login or encryption. Use fake test details only; do not enter real family or child information.</p>
           </div>
 
           {activeSection === 'dashboard' && (
@@ -454,8 +503,8 @@ export function AdminPage() {
                 <article className="admin-stat-card">
                   <span className="admin-stat-icon admin-stat-coral" aria-hidden="true">✿</span>
                   <span className="admin-stat-label">Website programs</span>
-                  <strong>{programs.length}</strong>
-                  <span className="admin-stat-caption">Currently listed on the website</span>
+                  <strong>{programs.filter((program) => program.active).length}</strong>
+                  <span className="admin-stat-caption">Published on the website in this browser</span>
                 </article>
               </section>
 
@@ -465,22 +514,9 @@ export function AdminPage() {
                     <h2 id="admin-recent-title">Recent inquiries</h2>
                     <p>New messages from families</p>
                   </div>
-                  <div className="admin-panel-heading-actions">
-                    <button
-                      className="admin-add-inquiry-button"
-                      type="button"
-                      onClick={() => {
-                        setActiveSection('inquiries');
-                        setShowInquiryForm(true);
-                        setInquiryNotice('');
-                      }}
-                    >
-                      Add inquiry
-                    </button>
-                    <button className="admin-text-button" type="button" onClick={() => setActiveSection('inquiries')}>
-                      View inquiries <span aria-hidden="true">→</span>
-                    </button>
-                  </div>
+                  <button className="admin-text-button" type="button" onClick={() => setActiveSection('inquiries')}>
+                    View inquiries <span aria-hidden="true">→</span>
+                  </button>
                 </div>
                 {renderInquiryList(inquiries.slice(0, 3))}
               </section>
@@ -494,73 +530,8 @@ export function AdminPage() {
                   <h2>Website contact form</h2>
                   <p>{inquiries.length} demo {inquiries.length === 1 ? 'inquiry' : 'inquiries'} stored in this browser</p>
                 </div>
-                <button
-                  className="admin-add-inquiry-button"
-                  type="button"
-                  aria-expanded={showInquiryForm}
-                  onClick={() => {
-                    setShowInquiryForm((isOpen) => !isOpen);
-                    setInquiryNotice('');
-                  }}
-                >
-                  {showInquiryForm ? 'Cancel' : 'Add inquiry'}
-                </button>
+                <span className="admin-readonly-label">LOCAL DEMO</span>
               </div>
-              {showInquiryForm && (
-                <form
-                  className="admin-inquiry-form"
-                  id="admin-add-inquiry-form"
-                  onSubmit={addInquiry}
-                >
-                  <div className="admin-inquiry-form-fields">
-                    <div className="form-group">
-                      <label htmlFor="admin-inquiry-name">Parent or guardian name</label>
-                      <input id="admin-inquiry-name" name="name" required maxLength="120" />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="admin-inquiry-email">Email (optional)</label>
-                      <input id="admin-inquiry-email" name="email" type="email" maxLength="254" />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="admin-inquiry-phone">Phone (optional)</label>
-                      <input id="admin-inquiry-phone" name="phone" type="tel" maxLength="40" />
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="admin-inquiry-preferred-contact">Preferred contact method</label>
-                      <select id="admin-inquiry-preferred-contact" name="preferredContact" defaultValue="either" required>
-                        <option value="either">Either email or phone</option>
-                        <option value="email">Email</option>
-                        <option value="phone">Phone</option>
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="admin-inquiry-program">Program of interest</label>
-                      <select id="admin-inquiry-program" name="program" defaultValue="Not sure yet">
-                        <option>Not sure yet</option>
-                        {programs.map((program) => <option key={program}>{program}</option>)}
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="admin-inquiry-age">Child's age range (optional)</label>
-                      <select id="admin-inquiry-age" name="age" defaultValue="">
-                        <option value="">Prefer not to say</option>
-                        <option>Under 3 years old</option>
-                        <option>3 to 5 years old</option>
-                        <option>6 to 12 years old</option>
-                        <option>13+ years old</option>
-                      </select>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="admin-inquiry-message">Message (optional)</label>
-                      <textarea id="admin-inquiry-message" name="message" rows="3" maxLength="2000" placeholder="Do not include sensitive medical details." />
-                    </div>
-                  </div>
-                  <div className="admin-inquiry-form-actions">
-                    <button className="admin-done-button" type="submit">Save inquiry</button>
-                  </div>
-                </form>
-              )}
-              {inquiryNotice && <p className="admin-inquiry-notice" role="status">{inquiryNotice}</p>}
               {renderInquiryList(inquiries)}
             </section>
           )}
@@ -689,22 +660,92 @@ export function AdminPage() {
           )}
 
           {activeSection === 'programs' && (
-            <section className="admin-panel" aria-label="Website programs">
+            <section className="admin-panel admin-programs-panel" aria-label="Manage website programs">
               <div className="admin-panel-heading">
                 <div>
-                  <h2>Programs on the website</h2>
-                  <p>Read-only preview</p>
+                  <h2>Program catalog</h2>
+                  <p>{programs.filter((program) => program.active).length} published · {programs.length} total</p>
                 </div>
-                <span className="admin-readonly-label">READ ONLY</span>
+                <span className="admin-readonly-label">LOCAL DEMO</span>
               </div>
-              <ul className="admin-program-list">
-                {programs.map((program) => (
-                  <li key={program}>
-                    <span className="admin-program-check" aria-hidden="true">✓</span>
-                    {program}
-                  </li>
-                ))}
-              </ul>
+              <p className="admin-programs-help">Add or edit a service, then publish or hide it from the public Programs section. Changes stay in this browser.</p>
+              {programError && <p className="admin-inquiry-error" role="alert">{programError}</p>}
+              {programNotice && <p className="admin-appointment-notice" role="status">{programNotice}</p>}
+
+              <div className="admin-program-manager">
+                <div className="admin-program-manager-list">
+                  {programs.map((program) => (
+                    <article className={`admin-program-card${program.active ? '' : ' is-hidden'}`} key={program.id}>
+                      <div className="admin-program-card-heading">
+                        <div>
+                          <span className={`admin-program-state${program.active ? ' is-published' : ''}`}>
+                            {program.active ? 'Published' : 'Hidden'}
+                          </span>
+                          <h3>{program.title}</h3>
+                          <p className="admin-program-age">{program.age}</p>
+                        </div>
+                        <div className="admin-program-actions">
+                          <button className="admin-done-button" type="button" onClick={() => editProgram(program)}>
+                            Edit
+                          </button>
+                          <button className="admin-delete-button" type="button" onClick={() => toggleProgramVisibility(program)}>
+                            {program.active ? 'Hide' : 'Publish'}
+                          </button>
+                        </div>
+                      </div>
+                      <p className="admin-program-description">{program.description}</p>
+                    </article>
+                  ))}
+                </div>
+
+                <form className="admin-panel admin-program-form" onSubmit={saveProgram}>
+                  <h3>{editingProgramId ? 'Edit program' : 'Add a program'}</h3>
+                  <p>{editingProgramId ? 'Update the details shown to families.' : 'New programs are published on this browser’s website preview.'}</p>
+                  <div className="form-group">
+                    <label htmlFor="program-title">Program name</label>
+                    <input
+                      id="program-title"
+                      required
+                      maxLength="100"
+                      value={programForm.title}
+                      onChange={(event) => setProgramForm({ ...programForm, title: event.target.value })}
+                      placeholder="e.g. Play and Learning"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="program-age">Age range or group</label>
+                    <input
+                      id="program-age"
+                      required
+                      maxLength="80"
+                      value={programForm.age}
+                      onChange={(event) => setProgramForm({ ...programForm, age: event.target.value })}
+                      placeholder="e.g. Ages 3–6"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="program-description">Description</label>
+                    <textarea
+                      id="program-description"
+                      required
+                      maxLength="1200"
+                      rows="5"
+                      value={programForm.description}
+                      onChange={(event) => setProgramForm({ ...programForm, description: event.target.value })}
+                      placeholder="Describe the service for families."
+                    />
+                  </div>
+                  <button className="btn admin-program-submit" type="submit">
+                    <span>{editingProgramId ? 'Save changes' : 'Add and publish'}</span>
+                    <span className="btn-arrow" aria-hidden="true">→</span>
+                  </button>
+                  {editingProgramId && (
+                    <button className="admin-program-cancel" type="button" onClick={cancelProgramEdit}>
+                      Cancel edit
+                    </button>
+                  )}
+                </form>
+              </div>
             </section>
           )}
 
@@ -713,7 +754,7 @@ export function AdminPage() {
               <span className="admin-settings-icon" aria-hidden="true">⚙</span>
               <div>
                 <h2>Admin tools are not connected</h2>
-                <p>This preview has no administrator sign-in or secure database. Demo inquiries remain in this browser’s local storage. Do not enter or store real family information here.</p>
+                <p>This preview has no administrator sign-in or secure database. Demo inquiries, appointments, and program settings remain in this browser’s local storage. Do not enter or store real family information here.</p>
               </div>
             </section>
           )}
@@ -721,6 +762,54 @@ export function AdminPage() {
           <footer className="admin-footer">Hope and Bloom · Admin preview</footer>
         </div>
       </main>
+      <dialog
+        ref={appointmentConflictDialogRef}
+        className="appointment-conflict-dialog"
+        aria-labelledby="appointment-conflict-title"
+        aria-describedby="appointment-conflict-description"
+        onCancel={() => setAppointmentConflict(null)}
+      >
+        {appointmentConflict && (
+          <>
+            <div className="appointment-conflict-icon" aria-hidden="true">!</div>
+            {appointmentConflict.reason === 'APPOINTMENT_PAST_DATE' ? (
+              <>
+                <p className="appointment-conflict-eyebrow">DATE NO LONGER AVAILABLE</p>
+                <h2 id="appointment-conflict-title">This date has already passed</h2>
+                <p id="appointment-conflict-description">
+                  Appointments can’t be booked for {fromDateKey(appointmentConflict.date).toLocaleDateString(undefined, {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}.
+                </p>
+                <p className="appointment-conflict-tip">Please choose today or a future date.</p>
+              </>
+            ) : (
+              <>
+                <p className="appointment-conflict-eyebrow">SCHEDULE CONFLICT</p>
+                <h2 id="appointment-conflict-title">This schedule is full</h2>
+                <p id="appointment-conflict-description">
+                  {appointmentConflict.name} already has a {appointmentConflict.type.toLowerCase()} appointment
+                  {' '}on {fromDateKey(appointmentConflict.date).toLocaleDateString(undefined, {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })} at {appointmentConflict.time}.
+                </p>
+                <p className="appointment-conflict-tip">Please choose another available time.</p>
+              </>
+            )}
+            <button
+              className="btn appointment-conflict-close"
+              type="button"
+              onClick={() => setAppointmentConflict(null)}
+            >
+              {appointmentConflict.reason === 'APPOINTMENT_PAST_DATE' ? 'Choose another date' : 'Choose another time'}
+            </button>
+          </>
+        )}
+      </dialog>
     </div>
   );
 }
