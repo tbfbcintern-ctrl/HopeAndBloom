@@ -2,35 +2,33 @@
 
 Hope and Bloom Child Development Center website.
 
-## Pagpapatakbo ng site sa local computer
+## Running the site locally
 
-Kailangan ang [Node.js](https://nodejs.org/) para magamit ang npm. Mula sa
-repository root, patakbuhin sa PowerShell:
+You need [Node.js](https://nodejs.org/) to use npm. From the repository root,
+run these commands in PowerShell:
 
 ```powershell
 npm.cmd install
 npm.cmd run dev
 ```
 
-Ginagamit ang `npm.cmd` dahil maaaring harangin ng PowerShell execution policy
-ang `npm` command.
+Use `npm.cmd` because PowerShell's execution policy may block the `npm`
+command.
 
-Buksan sa browser ang URL na ipapakita ni Vite sa terminal, karaniwan ay
-`http://localhost:5173/`. Para ihinto ang server, pindutin ang `Ctrl+C` sa
-terminal.
+Open the URL Vite displays in the terminal, usually
+`http://localhost:5173/`. To stop the server, press `Ctrl+C` in the terminal.
 
 ### Admin preview
 
-Buksan ang `http://localhost:5173/admin` para makita ang admin dashboard preview.
-Lalabas sa **Inquiries** ang mga ipinasa sa contact form, at mase-save ang mga ito
-sa local storage ng kasalukuyang browser. Walang authentication o encryption;
-gamitin lamang ang test details at huwag maglagay ng totoong impormasyon ng
-pamilya o bata. Maaaring magdagdag ng internal comment at markahang done ang
-inquiry. Sa **Appointments**, maaari ring pumili ng petsa sa calendar at gumawa
-ng demo appointment. Sa **Programs**, maaari ring magdagdag, mag-edit, at
-mag-publish o magtago ng serbisyo; makikita ang updates sa public Programs
-section gamit ang parehong browser. Lahat ng ito ay local demo data lang at
-hindi sini-sync sa ibang device o ipinapadala sa email o server.
+Open `http://localhost:5173/admin` to view the admin dashboard preview.
+Contact-form submissions appear under **Inquiries** and are saved in the current
+browser's local storage. There is no authentication or encryption, so use test
+details only; do not enter real family or child information. You can add
+internal comments to inquiries and mark them as done. Under **Appointments**,
+you can select a date and create a demo appointment. Under **Programs**, you can
+add, edit, publish, or hide a service; updates appear in the public Programs
+section in the same browser. This is local demo data only; it is not synced
+across devices or sent to an email address or server.
 
 ### Promo payment preview
 
@@ -43,8 +41,7 @@ do not enter real payment or personal information.
 
 ### Production build
 
-Mula sa repository root, patakbuhin:
-
+From the repository root, run:
 ```powershell
 npm.cmd run build
 ```
@@ -62,6 +59,12 @@ base, public-site, admin, and responsive files under
 `HopeAndBloom-main/HopeAndBloom/src/styles/`. The center photos and logo are in
 `HopeAndBloom-main/images/` and are bundled by Vite. Public-page behaviors are
 initialized from `HopeAndBloom-main/HopeAndBloom/src/interactions.js`.
+
+## Website details
+
+- Headings use Poppins; body text uses Roboto.
+- An ABA therapy session costs 1,200.
+- The assessment package, including a student handbook and uniform, costs 2,500.
 
 ## Website details
 
