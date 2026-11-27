@@ -1,50 +1,77 @@
 const STORAGE_KEY = 'hope-and-bloom:demo-programs:v1';
 export const PROGRAMS_UPDATED_EVENT = 'hope-and-bloom:programs-updated';
 
+const LEGACY_PROGRAM_IDS = new Set([
+  'early-intervention',
+  'communication-skills',
+  'social-skills-play',
+  'daily-living-routines',
+  'parent-training-coaching',
+  'school-transition-support'
+]);
+
 export const DEFAULT_PROGRAMS = [
   {
-    id: 'early-intervention',
-    age: 'Ages 18mo – 6yrs',
-    title: 'Early Intervention',
-    description: 'Intensive, warm one-on-one therapy for toddlers and young children building foundational words, imitation, play, and emotional regulation.',
+    id: 'individualized-aba-therapy',
+    age: 'One-to-one support',
+    title: 'Individualized ABA Therapy (1:1)',
+    description: 'Personalized, one-to-one support built around each child’s strengths, needs, and learning goals.',
+    objectives: [
+      'Build communication, understanding, and readiness to learn.',
+      'Grow independence with everyday and learning tasks.',
+      'Practice positive behaviors, play, and social interaction.',
+      'Support emotional regulation and coping.',
+      'Develop early learning and pre-academic skills.'
+    ],
+    
     active: true
   },
   {
-    id: 'communication-skills',
-    age: 'All Ages',
-    title: 'Communication Skills',
-    description: 'Verbal speech, gestures, PECS, or AAC devices — we empower your child with the exact tools they need to express their needs and thoughts.',
+    id: 'classroom-simulation',
+    age: 'Practice for school',
+    title: 'Classroom Simulation Program',
+    description: 'A friendly practice classroom where children can learn routines and group skills before starting school.',
+    objectives: [
+      'Join group activities and follow instructions and routines.',
+      'Practice paying attention, waiting, and moving between activities.',
+      'Build peer skills through sharing and taking turns.',
+      'Finish tasks and grow independence.',
+      'Practice flexibility when plans or routines change.'
+    ],
     active: true
   },
   {
-    id: 'social-skills-play',
-    age: 'Peer Groups',
-    title: 'Social Skills & Play',
-    description: 'Small, carefully matched peer groups where children practice sharing, taking turns, reciprocal play, and making authentic friendships.',
+    id: 'daily-living-activities',
+    age: 'Everyday independence',
+    title: 'Daily Living Activities (DLA) Program',
+    description: 'Hands-on practice with everyday home and community skills, helping children grow confidence and independence.',
+    objectives: [
+      'Build confidence with personal care and household tasks.',
+      'Practice organizing, sequencing, and following directions.',
+      'Grow safety awareness and responsibility.',
+      'Use communication and decision-making in daily activities.'
+    ],
+
     active: true
   },
   {
-    id: 'daily-living-routines',
-    age: 'Independence',
-    title: 'Daily Living Routines',
-    description: 'Fostering autonomy in everyday essentials: independent dressing, mealtime habits, personal hygiene, and gentle toileting routines.',
-    active: true
-  },
-  {
-    id: 'parent-training-coaching',
-    age: 'Family First',
-    title: 'Parent Training & Coaching',
-    description: 'Hands-on coaching and practical guidance for parents, siblings, and caregivers so positive habits thrive smoothly at home.',
-    active: true
-  },
-  {
-    id: 'school-transition-support',
-    age: 'School Ready',
-    title: 'School Transition Support',
-    description: 'Collaborative coordination with teachers, IEP advocacy, and classroom-readiness skills for confident school integration.',
+    id: 'vocational-training',
+    age: 'Work readiness',
+    title: 'Vocational Training Program',
+    description: 'Builds practical work habits for future participation in the community and employment, at a pace suited to each learner.',
+    objectives: [
+      'Practice starting and finishing tasks and following instructions.',
+      'Build responsibility and work stamina at an individual pace.',
+      'Grow independence, attention to detail, and adaptability.',
+      'Develop teamwork and positive communication.'
+    ],
     active: true
   }
 ];
+
+const isStringArray = (value) => (
+  value === undefined || (Array.isArray(value) && value.every((item) => typeof item === 'string'))
+);
 
 function isProgram(value) {
   return value !== null
@@ -53,7 +80,19 @@ function isProgram(value) {
     && typeof value.title === 'string'
     && typeof value.age === 'string'
     && typeof value.description === 'string'
-    && typeof value.active === 'boolean';
+    && typeof value.active === 'boolean'
+    && isStringArray(value.objectives)
+    && (value.implementation === undefined || typeof value.implementation === 'string')
+    && (value.modules === undefined || (
+      Array.isArray(value.modules)
+      && value.modules.every((module) => (
+        module !== null
+        && typeof module === 'object'
+        && typeof module.name === 'string'
+        && typeof module.activities === 'string'
+      ))
+    ))
+    && (value.assessmentFocus === undefined || typeof value.assessmentFocus === 'string');
 }
 
 export function getPrograms() {
@@ -71,6 +110,26 @@ export function getPrograms() {
 
   if (!Array.isArray(programs) || !programs.every(isProgram)) {
     throw new Error('Saved demo programs have an invalid format. Clear this site’s local storage and try again.');
+  }
+
+  if (programs.some((program) => LEGACY_PROGRAM_IDS.has(program.id))) {
+    const defaultProgramIds = new Set(DEFAULT_PROGRAMS.map((program) => program.id));
+    const savedDefaults = new Map(
+      programs
+        .filter((program) => defaultProgramIds.has(program.id))
+        .map((program) => [program.id, program])
+    );
+    const customPrograms = programs.filter((program) => (
+      !LEGACY_PROGRAM_IDS.has(program.id) && !defaultProgramIds.has(program.id)
+    ));
+
+    return [
+      ...DEFAULT_PROGRAMS.map((program) => ({
+        ...program,
+        ...savedDefaults.get(program.id)
+      })),
+      ...customPrograms
+    ];
   }
 
   return programs;

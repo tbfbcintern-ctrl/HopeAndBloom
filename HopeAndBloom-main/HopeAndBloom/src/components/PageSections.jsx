@@ -297,13 +297,54 @@ function ServicesSection() {
         </SectionHeading>
         {programError && <p className="service-program-error" role="alert">{programError}</p>}
         <div className="services-grid">
-          {publishedPrograms.map(({ id, age, title, description }) => (
+          {publishedPrograms.map(({
+            id,
+            age,
+            title,
+            description,
+            objectives,
+            implementation,
+            modules,
+            assessmentFocus
+          }) => (
             <article className="service-box" key={id}>
-              <div className="service-top">
-                <span className="service-pill">{age}</span>
-                <h3>{title}</h3>
-                <p>{description}</p>
-              </div>
+              <span className="service-pill">{age}</span>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              {objectives && (
+                <div className="service-objectives">
+                  <h4>Program objectives</h4>
+                  <ul>
+                    {objectives.map((objective) => <li key={objective}>{objective}</li>)}
+                  </ul>
+                </div>
+              )}
+              {implementation && (
+                <p className="service-program-note"><strong>Implementation:</strong> {implementation}</p>
+              )}
+              {modules && (
+                <div className="service-modules-wrap">
+                  <table className="service-modules">
+                    <thead>
+                      <tr>
+                        <th scope="col">Module</th>
+                        <th scope="col">Sample activities</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {modules.map(({ name, activities }) => (
+                        <tr key={name}>
+                          <th scope="row">{name}</th>
+                          <td>{activities}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {assessmentFocus && (
+                <p className="service-program-note"><strong>Assessment focus:</strong> {assessmentFocus}</p>
+              )}
               <a className="service-link" href="#contact">Learn more <span>→</span></a>
             </article>
           ))}
@@ -392,8 +433,27 @@ function ContactSection() {
               <input id="name" name="name" required autoComplete="name" placeholder="e.g. Sarah Jenkins" />
             </div>
             <div className="form-group">
+              <label htmlFor="contact-number">Contact Number</label>
+              <input id="contact-number" name="contactNumber" type="tel" required autoComplete="tel" placeholder="e.g. 09xx xxx xxxx" />
+            </div>
+            <div className="form-group">
               <label htmlFor="email">Email Address</label>
               <input id="email" name="email" type="email" required autoComplete="email" placeholder="sarah@example.com" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="relationship">Relationship to the Child</label>
+              <select id="relationship" name="relationship" defaultValue="" required>
+                <option value="" disabled>Select relationship</option>
+                <option value="parent">Parent</option>
+                <option value="guardian">Guardian</option>
+                <option value="grandparent">Grandparent</option>
+                <option value="teacher">Teacher</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="child-name">Child's Name <span className="home-request-optional">(optional)</span></label>
+              <input id="child-name" name="childName" autoComplete="off" placeholder="e.g. Alex" />
             </div>
             <div className="form-group">
               <label htmlFor="age">Child's Age</label>
@@ -403,6 +463,10 @@ function ContactSection() {
                 <option value="6-12">6 to 12 years old</option>
                 <option value="13-plus">13+ years old</option>
               </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor="address">Address <span className="home-request-optional">(optional)</span></label>
+              <input id="address" name="address" autoComplete="street-address" placeholder="Street, barangay, city" />
             </div>
             <div className="form-group">
               <label htmlFor="msg">How Can We Help Your Child?</label>

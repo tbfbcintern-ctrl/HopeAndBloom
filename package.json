@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "vite HopeAndBloom-main/HopeAndBloom",
+    "build": "vite build HopeAndBloom-main/HopeAndBloom",
+    "preview": "vite preview HopeAndBloom-main/HopeAndBloom"
   },
   "dependencies": {
     "react": "^19.0.0",

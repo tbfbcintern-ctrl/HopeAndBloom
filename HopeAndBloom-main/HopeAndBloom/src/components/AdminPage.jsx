@@ -4,6 +4,7 @@ import {
   deleteDemoInquiry,
   getDemoInquiries,
   INQUIRIES_UPDATED_EVENT,
+  saveDemoInquiry,
   updateDemoInquiry
 } from '../inquiries.js';
 import {
@@ -22,6 +23,7 @@ import {
 const navigation = [
   { id: 'dashboard', label: 'Dashboard', icon: '⌂' },
   { id: 'inquiries', label: 'Inquiries', icon: '✉' },
+  { id: 'add-inquiry', label: 'Add Inquiry', icon: '+' },
   { id: 'appointments', label: 'Appointments', icon: '▦' },
   { id: 'programs', label: 'Programs', icon: '✿' },
   { id: 'settings', label: 'Settings', icon: '⚙' }
@@ -37,6 +39,11 @@ const sectionCopy = {
     eyebrow: 'FAMILY ENQUIRIES',
     title: 'Inquiries',
     description: 'Messages from families who want to learn about your services.'
+  },
+  'add-inquiry': {
+    eyebrow: 'WALK-IN REGISTRATION',
+    title: 'Add Inquiry',
+    description: 'Manually record an inquiry received directly at the center.'
   },
   appointments: {
     eyebrow: 'SCHEDULE',
@@ -80,6 +87,8 @@ function fromDateKey(dateKey) {
 function InquiryCard({ inquiry, onDelete, onUpdate }) {
   const [comment, setComment] = useState(inquiry.comment);
   const [commentSaved, setCommentSaved] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
     setComment(inquiry.comment);
@@ -95,8 +104,87 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
     onUpdate(inquiry.id, { status: inquiry.status === 'done' ? 'open' : 'done' });
   };
 
+  const startEditing = () => {
+    setEditForm({
+      name: inquiry.name,
+      contactNumber: inquiry.contactNumber || '',
+      email: inquiry.email,
+      relationship: inquiry.relationship || '',
+      childName: inquiry.childName || '',
+      age: inquiry.age,
+      address: inquiry.address || '',
+      message: inquiry.message
+    });
+    setIsEditing(true);
+  };
+
+  const saveEdits = (event) => {
+    event.preventDefault();
+    if (onUpdate(inquiry.id, editForm)) {
+      setIsEditing(false);
+    }
+  };
+
   return (
     <article className={`admin-inquiry-card${inquiry.status === 'done' ? ' is-done' : ''}`}>
+      {isEditing ? (
+        <form className="admin-walk-in-form admin-inquiry-edit-form" onSubmit={saveEdits}>
+          <div className="admin-walk-in-heading">
+            <h3>Edit inquiry</h3>
+          </div>
+          <div className="admin-walk-in-grid">
+            <div className="form-group">
+              <label htmlFor={`inquiry-name-${inquiry.id}`}>Parent or Guardian Name</label>
+              <input id={`inquiry-name-${inquiry.id}`} required value={editForm.name} onChange={(event) => setEditForm({ ...editForm, name: event.target.value })} />
+            </div>
+            <div className="form-group">
+              <label htmlFor={`inquiry-contact-${inquiry.id}`}>Contact Number</label>
+              <input id={`inquiry-contact-${inquiry.id}`} type="tel" required value={editForm.contactNumber} onChange={(event) => setEditForm({ ...editForm, contactNumber: event.target.value })} />
+            </div>
+            <div className="form-group">
+              <label htmlFor={`inquiry-email-${inquiry.id}`}>Email Address</label>
+              <input id={`inquiry-email-${inquiry.id}`} type="email" value={editForm.email} onChange={(event) => setEditForm({ ...editForm, email: event.target.value })} />
+            </div>
+            <div className="form-group">
+              <label htmlFor={`inquiry-relationship-${inquiry.id}`}>Relationship to the Child</label>
+              <select id={`inquiry-relationship-${inquiry.id}`} value={editForm.relationship} onChange={(event) => setEditForm({ ...editForm, relationship: event.target.value })}>
+                <option value="">Select relationship</option>
+                <option value="parent">Parent</option>
+                <option value="guardian">Guardian</option>
+                <option value="grandparent">Grandparent</option>
+                <option value="teacher">Teacher</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label htmlFor={`inquiry-child-name-${inquiry.id}`}>Child's Name</label>
+              <input id={`inquiry-child-name-${inquiry.id}`} value={editForm.childName} onChange={(event) => setEditForm({ ...editForm, childName: event.target.value })} />
+            </div>
+            <div className="form-group">
+              <label htmlFor={`inquiry-age-${inquiry.id}`}>Child's Age</label>
+              <select id={`inquiry-age-${inquiry.id}`} required value={editForm.age} onChange={(event) => setEditForm({ ...editForm, age: event.target.value })}>
+                <option value="under-3">Under 3 years old</option>
+                <option value="3-5">3 to 5 years old</option>
+                <option value="6-12">6 to 12 years old</option>
+                <option value="13-plus">13+ years old</option>
+              </select>
+            </div>
+            <div className="form-group admin-walk-in-full">
+              <label htmlFor={`inquiry-address-${inquiry.id}`}>Address</label>
+              <input id={`inquiry-address-${inquiry.id}`} value={editForm.address} onChange={(event) => setEditForm({ ...editForm, address: event.target.value })} />
+            </div>
+            <div className="form-group admin-walk-in-full">
+              <label htmlFor={`inquiry-message-${inquiry.id}`}>How Can We Help?</label>
+              <textarea id={`inquiry-message-${inquiry.id}`} rows="3" value={editForm.message} onChange={(event) => setEditForm({ ...editForm, message: event.target.value })} />
+            </div>
+          </div>
+          <div className="admin-inquiry-actions">
+            <button className="admin-done-button" type="submit">Save changes</button>
+            <button className="admin-delete-button" type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+          </div>
+        </form>
+      ) : (
+      <>
       <div className="admin-inquiry-heading">
         <div>
           <div className="admin-inquiry-title-row">
@@ -105,9 +193,14 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
               {inquiry.status === 'done' ? 'Done' : 'Open'}
             </span>
           </div>
-          <a href={`mailto:${inquiry.email}`}>{inquiry.email}</a>
+          {inquiry.email && <a href={`mailto:${inquiry.email}`}>{inquiry.email}</a>}
+          {inquiry.source === 'walk-in' && <span className="admin-inquiry-source">Walk-in</span>}
+          {inquiry.contactNumber && (
+            <a href={`tel:${inquiry.contactNumber}`}>{inquiry.contactNumber}</a>
+          )}
         </div>
         <div className="admin-inquiry-actions">
+          <button className="admin-done-button" type="button" onClick={startEditing}>Edit</button>
           <button
             className="admin-done-button"
             type="button"
@@ -126,7 +219,10 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
         </div>
       </div>
       <div className="admin-inquiry-meta">
+        {inquiry.childName && <span>Child: {inquiry.childName}</span>}
         <span>Child age: {inquiry.age}</span>
+        {inquiry.relationship && <span>Relationship: {inquiry.relationship}</span>}
+        {inquiry.address && <span>Address: {inquiry.address}</span>}
         <time dateTime={inquiry.createdAt}>{new Date(inquiry.createdAt).toLocaleString()}</time>
       </div>
       {inquiry.message && <p className="admin-inquiry-message">{inquiry.message}</p>}
@@ -150,6 +246,8 @@ function InquiryCard({ inquiry, onDelete, onUpdate }) {
           {commentSaved && <span role="status">Saved in this browser</span>}
         </div>
       </div>
+      </>
+      )}
     </article>
   );
 }
@@ -158,6 +256,17 @@ export function AdminPage() {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [inquiries, setInquiries] = useState([]);
   const [inquiryError, setInquiryError] = useState('');
+  const [inquiryNotice, setInquiryNotice] = useState('');
+  const [walkInForm, setWalkInForm] = useState({
+    name: '',
+    contactNumber: '',
+    email: '',
+    relationship: '',
+    childName: '',
+    age: 'under-3',
+    address: '',
+    message: ''
+  });
   const [appointments, setAppointments] = useState([]);
   const [appointmentError, setAppointmentError] = useState('');
   const [appointmentNotice, setAppointmentNotice] = useState('');
@@ -250,6 +359,29 @@ export function AdminPage() {
     } catch (error) {
       setInquiryError(error.message);
       return false;
+    }
+  };
+
+  const addWalkInInquiry = (event) => {
+    event.preventDefault();
+    try {
+      saveDemoInquiry({ ...walkInForm, source: 'walk-in' });
+      setWalkInForm({
+        name: '',
+        contactNumber: '',
+        email: '',
+        relationship: '',
+        childName: '',
+        age: 'under-3',
+        address: '',
+        message: ''
+      });
+      setInquiryError('');
+      setInquiryNotice('');
+      setActiveSection('inquiries');
+    } catch (error) {
+      setInquiryNotice('');
+      setInquiryError(error.message);
     }
   };
 
@@ -527,12 +659,75 @@ export function AdminPage() {
             <section className="admin-panel" aria-label="Inquiries">
               <div className="admin-panel-heading">
                 <div>
-                  <h2>Website contact form</h2>
+                  <h2>Consultation inquiries</h2>
                   <p>{inquiries.length} demo {inquiries.length === 1 ? 'inquiry' : 'inquiries'} stored in this browser</p>
+                </div>
+                <button className="admin-text-button" type="button" onClick={() => setActiveSection('add-inquiry')}>
+                  Add inquiry <span aria-hidden="true">+</span>
+                </button>
+              </div>
+              {renderInquiryList(inquiries)}
+            </section>
+          )}
+
+          {activeSection === 'add-inquiry' && (
+            <section className="admin-panel" aria-label="Add inquiry">
+              <div className="admin-panel-heading">
+                <div>
+                  <h2>Add walk-in inquiry</h2>
+                  <p>Enter details received directly at the center.</p>
                 </div>
                 <span className="admin-readonly-label">LOCAL DEMO</span>
               </div>
-              {renderInquiryList(inquiries)}
+              <form className="admin-walk-in-form" onSubmit={addWalkInInquiry}>
+                <div className="admin-walk-in-grid">
+                  <div className="form-group">
+                    <label htmlFor="walkin-name">Parent or Guardian Name</label>
+                    <input id="walkin-name" required value={walkInForm.name} onChange={(event) => setWalkInForm({ ...walkInForm, name: event.target.value })} placeholder="Full name" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="walkin-contact">Contact Number</label>
+                    <input id="walkin-contact" type="tel" required value={walkInForm.contactNumber} onChange={(event) => setWalkInForm({ ...walkInForm, contactNumber: event.target.value })} placeholder="09xx xxx xxxx" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="walkin-email">Email Address <span>(optional)</span></label>
+                    <input id="walkin-email" type="email" value={walkInForm.email} onChange={(event) => setWalkInForm({ ...walkInForm, email: event.target.value })} placeholder="you@example.com" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="walkin-relationship">Relationship to the Child</label>
+                    <select id="walkin-relationship" value={walkInForm.relationship} onChange={(event) => setWalkInForm({ ...walkInForm, relationship: event.target.value })}>
+                      <option value="">Select relationship</option>
+                      <option value="parent">Parent</option>
+                      <option value="guardian">Guardian</option>
+                      <option value="grandparent">Grandparent</option>
+                      <option value="teacher">Teacher</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="walkin-child-name">Child's Name <span>(optional)</span></label>
+                    <input id="walkin-child-name" value={walkInForm.childName} onChange={(event) => setWalkInForm({ ...walkInForm, childName: event.target.value })} placeholder="Child's name" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="walkin-age">Child's Age</label>
+                    <select id="walkin-age" required value={walkInForm.age} onChange={(event) => setWalkInForm({ ...walkInForm, age: event.target.value })}>
+                      <option value="under-3">Under 3 years old</option>
+                      <option value="3-5">3 to 5 years old</option>
+                      <option value="6-12">6 to 12 years old</option>
+                      <option value="13-plus">13+ years old</option>
+                    </select>
+                  </div>
+                  <div className="form-group admin-walk-in-full">
+                    <label htmlFor="walkin-address">Address <span>(optional)</span></label>
+                    <input id="walkin-address" value={walkInForm.address} onChange={(event) => setWalkInForm({ ...walkInForm, address: event.target.value })} placeholder="Street, barangay, city" />
+                  </div>
+                  <div className="form-group admin-walk-in-full">
+                    <label htmlFor="walkin-message">How Can We Help?</label>
+                    <textarea id="walkin-message" rows="3" value={walkInForm.message} onChange={(event) => setWalkInForm({ ...walkInForm, message: event.target.value })} placeholder="Concerns, goals, or notes from the walk-in consultation" />
+                  </div>
+                </div>
+                <button className="admin-done-button admin-walk-in-submit" type="submit">Add walk-in inquiry</button>
+              </form>
             </section>
           )}
 

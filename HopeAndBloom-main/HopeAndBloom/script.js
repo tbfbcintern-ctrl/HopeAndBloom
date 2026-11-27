@@ -209,7 +209,11 @@ export function initializeInteractions() {
         saveDemoInquiry({
           name: String(formData.get('name') || ''),
           email: String(formData.get('email') || ''),
+          contactNumber: String(formData.get('contactNumber') || ''),
+          childName: String(formData.get('childName') || ''),
           age: String(formData.get('age') || ''),
+          relationship: String(formData.get('relationship') || ''),
+          address: String(formData.get('address') || ''),
           message: String(formData.get('msg') || '')
         });
 

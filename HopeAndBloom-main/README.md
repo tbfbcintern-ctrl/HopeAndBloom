@@ -4,19 +4,16 @@ Hope and Bloom Child Development Center website.
 
 ## Pagpapatakbo ng site sa local computer
 
-Kailangan ang [Node.js](https://nodejs.org/) para magamit ang npm. Sa PowerShell,
-buksan muna ang folder na may `package.json`. Kung nasa labas na folder ng
-na-download na project ka (`HopeAndBloom-main (1)`), patakbuhin:
+Kailangan ang [Node.js](https://nodejs.org/) para magamit ang npm. Mula sa
+repository root, patakbuhin sa PowerShell:
 
 ```powershell
-cd .\HopeAndBloom-main\HopeAndBloom-main\HopeAndBloom
 npm.cmd install
 npm.cmd run dev
 ```
 
 Ginagamit ang `npm.cmd` dahil maaaring harangin ng PowerShell execution policy
-ang `npm` command. Kung ang binuksan mo sa VS Code ay ang folder na may README
-na ito, gamitin ang `cd .\HopeAndBloom` sa halip na mahabang `cd` sa itaas.
+ang `npm` command.
 
 Buksan sa browser ang URL na ipapakita ni Vite sa terminal, karaniwan ay
 `http://localhost:5173/`. Para ihinto ang server, pindutin ang `Ctrl+C` sa
@@ -37,7 +34,7 @@ hindi sini-sync sa ibang device o ipinapadala sa email o server.
 
 ### Production build
 
-Mula sa folder na may `package.json`, patakbuhin:
+Mula sa repository root, patakbuhin:
 
 ```powershell
 npm.cmd run build
@@ -45,10 +42,10 @@ npm.cmd run build
 
 ## Project structure
 
-The page entry point is `HopeAndBloom/index.html`; the React app starts in
-`HopeAndBloom/src/main.jsx`. Reusable page components are in
-`HopeAndBloom/src/components/`. The center photos and logo remain in the
-repository's `images/` directory and are bundled by Vite.
+The page entry point is `HopeAndBloom-main/HopeAndBloom/index.html`; the React
+app starts in `HopeAndBloom-main/HopeAndBloom/src/main.jsx`. Reusable page
+components are in `HopeAndBloom-main/HopeAndBloom/src/components/`. The center
+photos and logo are in `HopeAndBloom-main/images/` and are bundled by Vite.
 
 ## Website details
 
