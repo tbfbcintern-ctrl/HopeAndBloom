@@ -1,3 +1,5 @@
+import { readStoredJson, writeStoredJson } from './storage.js';
+
 const STORAGE_KEY = 'hope-and-bloom:demo-appointments:v1';
 export const APPOINTMENTS_UPDATED_EVENT = 'hope-and-bloom:appointments-updated';
 
@@ -14,16 +16,12 @@ function isAppointment(value) {
 }
 
 function readStoredAppointments() {
-  const storedValue = window.localStorage.getItem(STORAGE_KEY);
-  if (storedValue === null) {
+  const appointments = readStoredJson(
+    STORAGE_KEY,
+    'Saved demo appointments are unreadable. Clear this site’s local storage and try again.'
+  );
+  if (appointments === null) {
     return [];
-  }
-
-  let appointments;
-  try {
-    appointments = JSON.parse(storedValue);
-  } catch {
-    throw new Error('Saved demo appointments are unreadable. Clear this site’s local storage and try again.');
   }
 
   if (!Array.isArray(appointments) || !appointments.every(isAppointment)) {
@@ -34,8 +32,7 @@ function readStoredAppointments() {
 }
 
 function writeStoredAppointments(appointments) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
-  window.dispatchEvent(new Event(APPOINTMENTS_UPDATED_EVENT));
+  writeStoredJson(STORAGE_KEY, appointments, APPOINTMENTS_UPDATED_EVENT);
 }
 
 export function getDemoAppointments() {
@@ -75,7 +72,8 @@ export function saveDemoAppointment({ name, date, time, type, notes }) {
     throw pastDateError;
   }
 
-  const conflictingAppointment = readStoredAppointments().find((savedAppointment) =>
+  const appointments = readStoredAppointments();
+  const conflictingAppointment = appointments.find((savedAppointment) =>
     savedAppointment.date === appointment.date && savedAppointment.time === appointment.time
   );
   if (conflictingAppointment) {
@@ -87,7 +85,7 @@ export function saveDemoAppointment({ name, date, time, type, notes }) {
     throw conflictError;
   }
 
-  writeStoredAppointments([appointment, ...readStoredAppointments()]);
+  writeStoredAppointments([appointment, ...appointments]);
   return appointment;
 }
 

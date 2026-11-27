@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { initializeInteractions } from '../script.js';
+import { initializeInteractions } from './interactions.js';
 import { Header, Hero } from './components/Header.jsx';
 import { PageSections } from './components/PageSections.jsx';
 import { Dialogs } from './components/Dialogs.jsx';

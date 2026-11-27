@@ -1,0 +1,86 @@
+/*Hope and Bloom — Warm & Joyful ABA Therapy Design*/
+
+:root {
+  --font-body: 'Roboto', Arial, sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+  --bg: #FAF7F0;
+  --bg-soft: #F4EFE6;
+  --surface: #FFFFFF;
+  --ink: #193B37;
+  --ink-heading: #133E38;
+  --muted: #59706C;
+  --muted-light: #7E9390;
+  --teal-primary: #19564E;
+  --teal-hover: #12433D;
+  --teal-soft: #E7F3F0;
+  --teal-light: #CDE6E1;
+  --gold: #E89B2B;
+  --gold-soft: #FEF6E9;
+  --gold-border: #F7DDB7;
+  --coral: #E66F53;
+  --coral-soft: #FDEEEA;
+  --coral-blob: #F2A38D;
+  --leaf: #398862;
+  --leaf-soft: #EBF7F1;
+  --line: #EBE5D8;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 4px 12px rgba(19, 62, 56, 0.05);
+  --shadow-md: 0 12px 32px -4px rgba(19, 62, 56, 0.08), 0 4px 12px -2px rgba(19, 62, 56, 0.03);
+  --shadow-lg: 0 24px 48px -12px rgba(19, 62, 56, 0.12), 0 8px 16px -4px rgba(19, 62, 56, 0.04);
+  color-scheme: light;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at 12% 15%, rgba(205, 230, 225, 0.45) 0%, transparent 40%),
+    radial-gradient(circle at 88% 8%, rgba(254, 246, 233, 0.6) 0%, transparent 40%),
+    radial-gradient(circle at 95% 45%, rgba(253, 238, 234, 0.4) 0%, transparent 35%);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--ink-heading);
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--teal-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}

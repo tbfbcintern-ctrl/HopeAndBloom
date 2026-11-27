@@ -1,5 +1,5 @@
 // Hope and Bloom Interactive Scripts
-import { saveDemoInquiry } from './src/inquiries.js';
+import { saveDemoInquiry } from './data/inquiries.js';
 
 export function initializeInteractions() {
   const configureDialog = (dialog, onClose) => {

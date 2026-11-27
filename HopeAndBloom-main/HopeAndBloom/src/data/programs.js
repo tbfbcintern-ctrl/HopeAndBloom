@@ -1,3 +1,5 @@
+import { readStoredJson, writeStoredJson } from './storage.js';
+
 const STORAGE_KEY = 'hope-and-bloom:demo-programs:v1';
 export const PROGRAMS_UPDATED_EVENT = 'hope-and-bloom:programs-updated';
 
@@ -23,7 +25,7 @@ export const DEFAULT_PROGRAMS = [
       'Support emotional regulation and coping.',
       'Develop early learning and pre-academic skills.'
     ],
-    
+
     active: true
   },
   {
@@ -96,16 +98,12 @@ function isProgram(value) {
 }
 
 export function getPrograms() {
-  const storedValue = window.localStorage.getItem(STORAGE_KEY);
-  if (storedValue === null) {
+  const programs = readStoredJson(
+    STORAGE_KEY,
+    'Saved demo programs are unreadable. Clear this site’s local storage and try again.'
+  );
+  if (programs === null) {
     return DEFAULT_PROGRAMS.map((program) => ({ ...program }));
-  }
-
-  let programs;
-  try {
-    programs = JSON.parse(storedValue);
-  } catch {
-    throw new Error('Saved demo programs are unreadable. Clear this site’s local storage and try again.');
   }
 
   if (!Array.isArray(programs) || !programs.every(isProgram)) {
@@ -160,6 +158,5 @@ export function savePrograms(programs) {
     throw new Error('Add a title, target audience, and description within the allowed length.');
   }
 
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(programs));
-  window.dispatchEvent(new Event(PROGRAMS_UPDATED_EVENT));
+  writeStoredJson(STORAGE_KEY, programs, PROGRAMS_UPDATED_EVENT);
 }

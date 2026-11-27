@@ -9,7 +9,7 @@ export function Footer() {
             <a className="brand" href="#top" aria-label="Hope and Bloom Home">
               <img className="brand-logo" src={logo} alt="" />
             </a>
-            <p style={{ color: 'var(--muted)', fontSize: '0.9rem', marginTop: '0.4rem' }}>
+            <p className="footer-tagline">
               Empowering every child with individualized, play-based ABA therapy.
             </p>
           </div>

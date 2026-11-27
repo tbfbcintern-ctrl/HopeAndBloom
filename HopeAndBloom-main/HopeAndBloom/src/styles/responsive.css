@@ -1,0 +1,235 @@
+/*================= RESPONSIVE MEDIA QUERIES =================*/
+
+@media (max-width: 992px) {
+  .admin-shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+  .admin-appointment-layout {
+    grid-template-columns: 1fr;
+  }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .about-center-intro {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .about-center-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .about-center-card:last-child {
+    grid-column: 1 / -1;
+    min-height: auto;
+  }
+  .hero-visual {
+    order: 1;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .glance-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .cols-cards, .services-grid, .promo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .admin-shell {
+    display: block;
+  }
+  .admin-sidebar {
+    position: static;
+    height: auto;
+    padding: 0.7rem 0.8rem 0.5rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .admin-brand {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.2rem 0.6rem;
+  }
+  .admin-brand img {
+    width: 150px;
+    height: 42px;
+  }
+  .admin-nav {
+    display: flex;
+    gap: 0.3rem;
+    overflow-x: auto;
+    padding-bottom: 0.3rem;
+  }
+  .admin-nav-item {
+    width: auto;
+    min-height: 40px;
+    flex: 0 0 auto;
+    gap: 0.45rem;
+    padding: 0.5rem 0.65rem;
+    font-size: 0.78rem;
+  }
+  .admin-nav-icon {
+    width: auto;
+  }
+  .admin-nav-count,
+  .admin-back-link {
+    display: none;
+  }
+  .admin-topbar {
+    min-height: 58px;
+    padding: 0.6rem 1rem;
+  }
+  .admin-content {
+    padding: 1.4rem 1rem 2rem;
+  }
+  .admin-page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .admin-primary-link {
+    align-self: flex-start;
+  }
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+  .admin-program-manager {
+    grid-template-columns: 1fr;
+  }
+  .admin-program-card-heading {
+    flex-direction: column;
+  }
+  .admin-appointment-layout {
+    gap: 0.8rem;
+  }
+  .admin-panel {
+    padding: 1rem;
+  }
+  nav.main-nav {
+    display: none;
+  }
+  header .brand-logo {
+    width: clamp(7rem, 40vw, 10rem);
+  }
+  .nav-actions .btn {
+    gap: 0.35rem;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.78rem;
+  }
+  .purpose-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .purpose-card {
+    gap: 1rem;
+    padding: 1.6rem 1.35rem;
+  }
+  .purpose-card-icon {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    font-size: 1.2rem;
+  }
+  .about-center-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .about-center-card:last-child {
+    grid-column: auto;
+  }
+  .about-center-card {
+    min-height: 0;
+    padding: 1.5rem;
+  }
+  .about-detail-dialog {
+    width: calc(100% - 1rem);
+    max-height: calc(100vh - 1rem);
+    padding: 1.4rem;
+    border-radius: 22px;
+  }
+  .promo-checkout-dialog {
+    max-height: calc(100vh - 1rem);
+    padding: 1rem;
+  }
+  .promo-checkout-header .about-detail-close {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+  .promo-checkout-dialog .about-detail-summary {
+    font-size: 0.9rem;
+  }
+  .promo-checkout-method-row {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+  .promo-checkout-summary {
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0.85rem;
+  }
+  .promo-checkout-form {
+    margin-top: 0.65rem;
+  }
+  .home-request-fields {
+    grid-template-columns: 1fr;
+  }
+  .home-request-full {
+    grid-column: auto;
+  }
+  .glance-grid {
+    grid-template-columns: 1fr;
+  }
+  .cols-cards, .services-grid, .promo-grid, .steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .floating-review-card {
+    left: 0;
+    bottom: -10px;
+  }
+  .floating-chat {
+    bottom: 16px;
+    right: 16px;
+    padding: 0.7rem 1.1rem;
+    font-size: 0.88rem;
+  }
+  .back-to-top {
+    right: 16px;
+    bottom: 76px;
+  }
+}
+
+@media (max-width: 380px) {
+  header .brand-logo {
+    width: 7rem;
+  }
+  .nav-actions .btn {
+    gap: 0.25rem;
+    padding: 0.5rem 0.55rem;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .promo-checkout-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-detail-dialog.is-opening,
+  .about-detail-dialog::backdrop {
+    animation: none;
+  }
+}

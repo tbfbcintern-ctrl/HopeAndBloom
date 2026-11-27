@@ -32,6 +32,15 @@ mag-publish o magtago ng serbisyo; makikita ang updates sa public Programs
 section gamit ang parehong browser. Lahat ng ito ay local demo data lang at
 hindi sini-sync sa ibang device o ipinapadala sa email o server.
 
+### Promo payment preview
+
+The promo cards open a demo checkout with a selectable payment-method preview.
+It does not connect to PayMongo, send a payment request, collect payment
+details, charge money, or activate a package. Completing the simulation adds a
+demo alert, including the parent/guardian test name, in the admin preview for
+the same browser only; the alert is not proof of payment. Use fake names only;
+do not enter real payment or personal information.
+
 ### Production build
 
 Mula sa repository root, patakbuhin:
@@ -44,8 +53,15 @@ npm.cmd run build
 
 The page entry point is `HopeAndBloom-main/HopeAndBloom/index.html`; the React
 app starts in `HopeAndBloom-main/HopeAndBloom/src/main.jsx`. Reusable page
-components are in `HopeAndBloom-main/HopeAndBloom/src/components/`. The center
-photos and logo are in `HopeAndBloom-main/images/` and are bundled by Vite.
+sections are in `HopeAndBloom-main/HopeAndBloom/src/components/sections/`, and
+the admin preview is divided into focused components in
+`HopeAndBloom-main/HopeAndBloom/src/components/admin/`. Browser-local data
+models live in `HopeAndBloom-main/HopeAndBloom/src/data/`; shared date helpers
+are in `HopeAndBloom-main/HopeAndBloom/src/utils/`. Styles are grouped into
+base, public-site, admin, and responsive files under
+`HopeAndBloom-main/HopeAndBloom/src/styles/`. The center photos and logo are in
+`HopeAndBloom-main/images/` and are bundled by Vite. Public-page behaviors are
+initialized from `HopeAndBloom-main/HopeAndBloom/src/interactions.js`.
 
 ## Website details
 

@@ -1,3 +1,5 @@
+import { readStoredJson, writeStoredJson } from './storage.js';
+
 const STORAGE_KEY = 'hope-and-bloom:demo-inquiries:v1';
 export const INQUIRIES_UPDATED_EVENT = 'hope-and-bloom:inquiries-updated';
 
@@ -20,16 +22,12 @@ function isInquiry(value) {
 }
 
 function readStoredInquiries() {
-  const storedValue = window.localStorage.getItem(STORAGE_KEY);
-  if (storedValue === null) {
+  const inquiries = readStoredJson(
+    STORAGE_KEY,
+    'Saved demo inquiries are unreadable. Clear this site’s local storage and try again.'
+  );
+  if (inquiries === null) {
     return [];
-  }
-
-  let inquiries;
-  try {
-    inquiries = JSON.parse(storedValue);
-  } catch (error) {
-    throw new Error('Saved demo inquiries are unreadable. Clear this site’s local storage and try again.');
   }
 
   if (!Array.isArray(inquiries) || !inquiries.every(isInquiry)) {
@@ -44,8 +42,7 @@ function readStoredInquiries() {
 }
 
 function writeStoredInquiries(inquiries) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(inquiries));
-  window.dispatchEvent(new Event(INQUIRIES_UPDATED_EVENT));
+  writeStoredJson(STORAGE_KEY, inquiries, INQUIRIES_UPDATED_EVENT);
 }
 
 export function getDemoInquiries() {
